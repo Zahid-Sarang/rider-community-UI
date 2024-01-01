@@ -1,4 +1,10 @@
-#login-form-forgot {
-    padding-top: 8px;
-    font-size: 12px;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        font-family: "Rubik", sans-serif;
+        background-color: #0f172a;
+    }
 }
