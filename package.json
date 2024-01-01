@@ -17,6 +17,7 @@
         "@testing-library/jest-dom": "^6.1.5",
         "antd": "^5.12.5",
         "axios": "^1.6.3",
+        "lucide-react": "^0.303.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.21.1",

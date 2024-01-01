@@ -1,5 +1,6 @@
-import { self } from "../http/api";
+import { selfApi } from "../http/api";
 export const getSelf = async () => {
-    const { data } = await self();
+    const { data } = await selfApi();
     return data;
 };
+
