@@ -23,6 +23,8 @@ const LoginPage = () => {
         reset,
     } = useForm<Credentials>();
     const { setUser } = useAuthStore();
+
+    // Move useQuery inside the component
     const { refetch } = useQuery({
         queryKey: ["self"],
         queryFn: getSelf,
@@ -41,6 +43,7 @@ const LoginPage = () => {
     const onSubmit: SubmitHandler<Credentials> = (data) => {
         mutate(data);
         console.log(data);
+        reset();
     };
 
     if (error) {
@@ -154,7 +157,6 @@ const LoginPage = () => {
                     </div>
                 </div>
             </div>
-            <ToastContainer />
         </>
     );
 };
