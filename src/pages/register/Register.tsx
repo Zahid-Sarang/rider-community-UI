@@ -1,12 +1,21 @@
 import Logo from "../../components/icons/Logo";
 import { NavLink } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { RegisterData } from "../../types";
+import { registerApi } from "../../http/api";
+import { getSelf } from "../../constants";
+import { useAuthStore } from "../../store";
+
+const registerUser = async (registerData: RegisterData) => {
+    const { data } = await registerApi(registerData);
+    return data;
+};
 
 const Register = () => {
+    const { setUser } = useAuthStore();
     const {
         register,
         handleSubmit,
@@ -14,9 +23,40 @@ const Register = () => {
         reset,
     } = useForm<RegisterData>();
 
+    const { refetch } = useQuery({
+        queryKey: ["self"],
+        queryFn: getSelf,
+        enabled: false,
+    });
+
+    const { mutate, error } = useMutation({
+        mutationKey: ["register"],
+        mutationFn: registerUser,
+        onSuccess: async () => {
+            const selfDataPromise = await refetch();
+            setUser(selfDataPromise.data);
+        },
+    });
+
     const onSubmit: SubmitHandler<RegisterData> = (data) => {
         console.log(data);
+        mutate(data);
+        reset();
     };
+
+    if (error) {
+        toast.error(`API Error: ${error.message}`, {
+            toastId: "apiError1",
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
     return (
         <div>
             <>
@@ -156,7 +196,7 @@ const Register = () => {
                                             name="password"
                                             type="password"
                                             autoComplete="current-password"
-                                            className="w-full px-3 py-2 leading-tight rounded shadow appearance-none bg-follow-btn text-primary focus:outline-none focus:shadow-outline"
+                                            className="block w-full rounded-md border-0 py-1.5 bg-follow-btn text-primary shadow-sm ring-1 ring-inset  focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                                         />
                                         {errors.password && (
                                             <p role="alert" className="text-secondary-btn">
@@ -176,7 +216,7 @@ const Register = () => {
                                 </div>
                             </form>
 
-                            {/* <p className="mt-10 text-sm text-center text-gray-500">
+                            <p className="mt-10 text-sm text-center text-gray-500">
                                 Already have an account?{" "}
                                 <NavLink
                                     to="/auth/login"
@@ -184,7 +224,7 @@ const Register = () => {
                                 >
                                     Log In here
                                 </NavLink>
-                            </p> */}
+                            </p>
                         </div>
                     </div>
                 </div>

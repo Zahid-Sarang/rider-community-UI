@@ -1,12 +1,12 @@
 import Logo from "../../components/icons/Logo";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Credentials } from "../../types";
 import { loginApi } from "../../http/api";
 import { getSelf } from "../../constants";
 import { useAuthStore } from "../../store";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 const loginUser = async (credentials: Credentials) => {
@@ -24,14 +24,13 @@ const LoginPage = () => {
     } = useForm<Credentials>();
     const { setUser } = useAuthStore();
 
-    // Move useQuery inside the component
     const { refetch } = useQuery({
         queryKey: ["self"],
         queryFn: getSelf,
         enabled: false,
     });
 
-    const { mutate, isPending, isError, error } = useMutation({
+    const { mutate, error } = useMutation({
         mutationKey: ["login"],
         mutationFn: loginUser,
         onSuccess: async () => {
@@ -117,7 +116,7 @@ const LoginPage = () => {
                                         name="password"
                                         type="password"
                                         autoComplete="current-password"
-                                        className="w-full px-3 py-2 leading-tight rounded shadow appearance-none bg-follow-btn text-primary focus:outline-none focus:shadow-outline"
+                                        className="block w-full rounded-md border-0 py-1.5 bg-follow-btn text-primary shadow-sm ring-1 ring-inset  focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                                     />
                                     {errors.password && (
                                         <p role="alert" className="text-secondary-btn">
@@ -127,12 +126,12 @@ const LoginPage = () => {
                                 </div>
                             </div>
                             <div className="text-sm">
-                                <Link
+                                <NavLink
                                     to="/auth/login"
                                     className="text-sm text-primary hover:underline"
                                 >
                                     Forgot Password?
-                                </Link>
+                                </NavLink>
                             </div>
 
                             <div>
@@ -147,12 +146,12 @@ const LoginPage = () => {
 
                         <p className="mt-10 text-sm text-center text-gray-500">
                             Don't have an account?{" "}
-                            <Link
+                            <NavLink
                                 to="/auth/register"
                                 className="font-semibold leading-6 text-secondary-btn hover:text-primary-btn"
                             >
                                 Register Here
-                            </Link>
+                            </NavLink>
                         </p>
                     </div>
                 </div>
