@@ -75,6 +75,7 @@ const LoginPage = () => {
                                 <div className="mt-2">
                                     <input
                                         {...register("email", { required: "Email is required" })}
+                                        placeholder="Email"
                                         id="email"
                                         name="email"
                                         type="email"
@@ -109,6 +110,7 @@ const LoginPage = () => {
                                             },
                                         })}
                                         id="password"
+                                        placeholder="Password"
                                         name="password"
                                         type="password"
                                         autoComplete="current-password"
@@ -135,7 +137,7 @@ const LoginPage = () => {
                                     type="submit"
                                     className="flex w-full justify-center rounded-md bg-secondary-btn px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:text-secondary-btn shadow-sm hover:bg-primary-btn focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary-btn"
                                 >
-                                    Sign in
+                                    Log In
                                 </button>
                             </div>
                         </form>

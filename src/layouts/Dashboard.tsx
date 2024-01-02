@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuthStore } from "../store";
+import Sidebar from "./sidebar/Sidebar";
 
 const Home = () => {
     const { user } = useAuthStore();
@@ -8,6 +9,7 @@ const Home = () => {
     }
     return (
         <div>
+            <Sidebar />
             <Outlet />
         </div>
     );
