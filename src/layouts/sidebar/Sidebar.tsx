@@ -15,14 +15,15 @@ const Sidebar = () => {
                     <div className="flex h-20 px-2 max-md:fixed max-md:top-0 max-md:w-full max-md:bg-white/80 max-md:left-0 max-md:px-4 max-md:h-14 max-md:shadow-sm max-md:dark:bg-slate-900/80 backdrop-blur-xl">
                         <Link to="/" className="flex items-center gap-3">
                             {/* mobile logo */}
-                            <span className="md:w-8 hidden text-2xl max-xl:!block max-md:!hidden shrink-0 uk-animation-scale-up">
+                            <span className="md:w-8 hidden text-2xl max-xl:!block max-md:!hidden shrink-0 uk-animation-scale-up text-secondary-btn ">
                                 <Bike />
                             </span>
 
                             {/* desktop logo */}
-                            <h2 className="hidden w-full h-6 ml-1 text-xl sm:block lg:hidden xl:hidden text-secondary-btn">
-                                BIKE BUDDIES
-                            </h2>
+                            <span className="hidden w-full h-6 xl:block">
+                                <Logo />
+                            </span>
+                            <h2 className="font-extrabold text-primary md:hidden">BIKE BUDDIES</h2>
                         </Link>
                     </div>
                 </div>
