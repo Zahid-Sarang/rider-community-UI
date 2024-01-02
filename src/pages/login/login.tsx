@@ -1,10 +1,13 @@
 import Logo from "../../components/icons/Logo";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Credentials } from "../../types";
 import { loginApi } from "../../http/api";
 import { getSelf } from "../../constants";
 import { useAuthStore } from "../../store";
 import { Link } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 const loginUser = async (credentials: Credentials) => {
     const { data } = await loginApi(credentials);
@@ -13,6 +16,12 @@ const loginUser = async (credentials: Credentials) => {
 };
 
 const LoginPage = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm<Credentials>();
     const { setUser } = useAuthStore();
     const { refetch } = useQuery({
         queryKey: ["self"],
@@ -28,15 +37,34 @@ const LoginPage = () => {
             setUser(selfDataPromise.data);
         },
     });
+
+    const onSubmit: SubmitHandler<Credentials> = (data) => {
+        mutate(data);
+        console.log(data);
+    };
+
+    if (error) {
+        toast.error(`API Error: ${error.message}`, {
+            toastId: "apiError1",
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
     return (
         <>
-            <div className="flex items-center justify-center min-h-screen flex-col gap-4">
+            <div className="flex flex-col items-center justify-center min-h-screen gap-4">
                 <Logo />
-                <div className="bg-sidebar-bg shadow-md rounded-xl p-8 max-w-md w-full">
+                <div className="w-full max-w-md p-8 shadow-md bg-sidebar-bg rounded-xl">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm"></div>
 
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                        <form className="space-y-6">
+                        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <div>
                                 <label
                                     htmlFor="email"
@@ -46,12 +74,18 @@ const LoginPage = () => {
                                 </label>
                                 <div className="mt-2">
                                     <input
+                                        {...register("email", { required: "Email is required" })}
                                         id="email"
                                         name="email"
                                         type="email"
                                         autoComplete="email"
                                         className="block w-full rounded-md border-0 py-1.5 bg-follow-btn text-primary shadow-sm ring-1 ring-inset  focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                                     />
+                                    {errors.email && (
+                                        <p className="text-secondary-btn" role="alert">
+                                            {errors.email.message}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
 
@@ -66,12 +100,25 @@ const LoginPage = () => {
                                 </div>
                                 <div className="mt-2">
                                     <input
+                                        {...register("password", {
+                                            required: "Password is required",
+                                            minLength: {
+                                                value: 8,
+                                                message:
+                                                    "Password must be at least 8 characters long",
+                                            },
+                                        })}
                                         id="password"
                                         name="password"
                                         type="password"
                                         autoComplete="current-password"
                                         className="w-full px-3 py-2 leading-tight rounded shadow appearance-none bg-follow-btn text-primary focus:outline-none focus:shadow-outline"
                                     />
+                                    {errors.password && (
+                                        <p role="alert" className="text-secondary-btn">
+                                            {errors.password.message}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                             <div className="text-sm">
@@ -93,7 +140,7 @@ const LoginPage = () => {
                             </div>
                         </form>
 
-                        <p className="mt-10 text-center text-sm text-gray-500">
+                        <p className="mt-10 text-sm text-center text-gray-500">
                             Don't have an account?{" "}
                             <Link
                                 to="/auth/register"
@@ -105,6 +152,7 @@ const LoginPage = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </>
     );
 };
