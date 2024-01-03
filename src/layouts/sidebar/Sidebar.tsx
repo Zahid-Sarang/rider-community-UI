@@ -1,14 +1,24 @@
-import { Bike } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { Bike, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import Logo from "../../components/icons/Logo";
 import NavBarLink from "../../components/navLink/NavLink";
 import { NavLinks } from "../../constants";
 import { logoutApi } from "../../http/api";
+import { useAuthStore } from "../../store";
 
 const Sidebar = () => {
-    const logout = async () => {
-        await logoutApi();
-    };
+    const { logout: logoutFromStore } = useAuthStore();
+    // logout user
+    const { mutate: logoutMutate } = useMutation({
+        mutationKey: ["logout"],
+        mutationFn: logoutApi,
+        onSuccess: async () => {
+            logoutFromStore();
+            return;
+        },
+    });
+
     return (
         <>
             {/* sidebar */}
@@ -36,6 +46,18 @@ const Sidebar = () => {
                             <NavBarLink url={item.url} Icon={item.Icon} title={item.title} />
                         ))}
                     </nav>
+                    {/* Logout Button */}
+                    <div>
+                        <button
+                            onClick={() => logoutMutate()}
+                            className="flex items-center justify-center gap-3 p-3 font-extrabold xl:ml-10 group text-secondary-btn xl:mb-10"
+                        >
+                            <span className="hidden xl:block">Logout</span>
+                            <span>
+                                <LogOut />
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </>
