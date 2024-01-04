@@ -5,7 +5,13 @@ export interface User {
     id: number;
     firstName: string;
     lastName: string;
+    userName: string;
     email: string;
+    profilePhoto: string;
+    coverPhoto: string;
+    bio: string;
+    location: string;
+    bikeDetails: string;
 }
 
 interface AuthState {
