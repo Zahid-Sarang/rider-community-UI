@@ -15,3 +15,16 @@ export type Credentials = {
     email: string;
     password: string;
 };
+
+export type UpdateUserData = {
+    id?: number;
+    firstName?: string;
+    lastName?: string;
+    password?: string;
+    userName?: string;
+    profilePhoto?: FileList;
+    coverPhoto?: FileList;
+    bio?: string;
+    location?: string;
+    bikeDetails?: string;
+};
