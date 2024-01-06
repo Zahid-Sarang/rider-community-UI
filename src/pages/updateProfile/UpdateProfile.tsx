@@ -3,22 +3,11 @@ import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store";
 import profilePlaceHolder from "../../assets/profile.jpg";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { updateUserApi } from "../../http/api";
 import { UpdateUserData } from "../../types";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { getSelf } from "../../constants";
-import { toast } from "react-toastify";
 
 const UpdateProfile = () => {
-    const { user, setUser } = useAuthStore();
+    const { user } = useAuthStore();
     const { register, handleSubmit, reset } = useForm();
-
-    const { refetch } = useQuery({
-        queryKey: ["self"],
-        queryFn: getSelf,
-        enabled: false,
-    });
-
     const onSubmit: SubmitHandler<UpdateUserData> = async (data) => {
         console.log(data);
     };
