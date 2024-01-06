@@ -22,7 +22,7 @@ export type UpdateUserData = {
     lastName?: string;
     password?: string;
     userName?: string;
-    profilePhoto?: FileList;
+    profilePhoto?: FileList | string;
     coverPhoto?: FileList;
     bio?: string;
     location?: string;

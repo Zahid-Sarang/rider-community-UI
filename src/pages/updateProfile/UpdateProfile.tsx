@@ -4,13 +4,74 @@ import { useAuthStore } from "../../store";
 import profilePlaceHolder from "../../assets/profile.jpg";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { UpdateUserData } from "../../types";
+import { updateUserApi } from "../../http/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getSelf } from "../../constants";
+import { toast } from "react-toastify";
 
 const UpdateProfile = () => {
-    const { user } = useAuthStore();
+    const { user, setUser } = useAuthStore();
     const { register, handleSubmit, reset } = useForm();
+
+    const { refetch } = useQuery({
+        queryKey: ["self"],
+        queryFn: getSelf,
+        enabled: false,
+    });
+
+    const updateUser = async (updateDate: UpdateUserData) => {
+        const { data } = await updateUserApi(user?.id, updateDate);
+        console.log("data", data);
+        return data;
+    };
+
+    const { mutate, error } = useMutation({
+        mutationKey: ["updateProfile"],
+        mutationFn: updateUser,
+        onSuccess: async () => {
+            const selfDataPromise = await refetch();
+            setUser(selfDataPromise.data);
+            reset();
+        },
+    });
+
     const onSubmit: SubmitHandler<UpdateUserData> = async (data) => {
         console.log(data);
+        const formData = new FormData();
+        formData.append("userName", data.userName || user?.userName || "");
+        formData.append("firstName", data.firstName || user?.firstName || "");
+        formData.append("lastName", data.lastName || user?.lastName || "");
+        formData.append("location", data.location || user?.location || "");
+        formData.append("bio", data.bio || user?.bio || "");
+        formData.append("bikeDetails", data.bikeDetails || user?.bikeDetails || "");
+
+        if (data.profilePhoto && data.profilePhoto.length > 0) {
+            formData.append("profilePhoto", data.profilePhoto[0]);
+        } else if (user?.profilePhoto) {
+            formData.append("profilePhoto", user?.profilePhoto);
+        }
+
+        if (data.coverPhoto && data.coverPhoto.length > 0) {
+            formData.append("coverPhoto", data.coverPhoto[0]);
+        }
+
+        console.log(formData);
+        mutate(formData);
     };
+
+    if (error) {
+        toast.error(`API Error: ${error.message}`, {
+            toastId: "apiError1",
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
 
     return (
         <>
