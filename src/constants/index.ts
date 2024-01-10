@@ -14,6 +14,7 @@ import {
     BellDot,
     PlusCircle,
     CircleUserRound,
+    MapPinned,
 } from "lucide-react";
 
 export const NavLinks = [
@@ -43,9 +44,14 @@ export const NavLinks = [
         title: "Notification",
     },
     {
-        url: "/create-post",
+        url: "/create-memories",
         Icon: PlusCircle,
-        title: "Create Post",
+        title: "Create Memory ",
+    },
+    {
+        url: "/create-itinerary",
+        Icon: MapPinned,
+        title: "Create Itinerary",
     },
     {
         url: "/profile",

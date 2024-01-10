@@ -23,8 +23,20 @@ export type UpdateUserData = {
     password?: string;
     userName?: string;
     profilePhoto?: FileList | string;
-    coverPhoto?: FileList;
+    coverPhoto?: FileList | string;
     bio?: string;
     location?: string;
     bikeDetails?: string;
+};
+
+export type ItineraryData = {
+    tripTitle: string;
+    tripDescription: string;
+    tripDuration: string;
+    startDateTime: string;
+    endDateTime: string;
+    startPoint: string;
+    endingPoint: string;
+    destinationImage: FileList | string;
+    userId?: number;
 };

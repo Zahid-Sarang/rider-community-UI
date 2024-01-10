@@ -7,7 +7,8 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/login/login";
 import ProfilePage from "./pages/profile/Profile";
 import RegisterPage from "./pages/register/Register";
-import UpdateProfilePage from "./pages/updateProfile/UpdateProfile";
+import UpdateProfilePage from "./pages/profile/UpdateProfile";
+import ItineraryPage from "./pages/itinerary/Itinerary";
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
                     {
                         path: "/update-profile",
                         element: <UpdateProfilePage />,
+                    },
+                    {
+                        path: "/create-itinerary",
+                        element: <ItineraryPage />,
                     },
                 ],
             },
