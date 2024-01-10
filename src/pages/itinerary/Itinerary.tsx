@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import { ItineraryData } from "../../types";
 import { toast } from "react-toastify";
 import { useAuthStore } from "../../store";
+import { useMutation } from "@tanstack/react-query";
+import { itineraryApi } from "../../http/api";
 
 const Itinerary = () => {
     const { user } = useAuthStore();
@@ -18,6 +20,11 @@ const Itinerary = () => {
         clearErrors,
         formState: { errors },
     } = useForm<ItineraryData>();
+
+    const { mutate, error } = useMutation({
+        mutationKey: ["itinerary"],
+        mutationFn: itineraryApi,
+    });
 
     const validateDateOrder = (startDate: number | Date, endDate: number | Date) => {
         if (!isValid(startDate) || !isValid(endDate)) {
@@ -48,6 +55,7 @@ const Itinerary = () => {
             formData.append("endDateTime", new Date(data.endDateTime).toISOString());
             formData.append("startPoint", data.startPoint);
             formData.append("endingPoint", data.endingPoint);
+            formData.append("userId", user?.id.toString() || "");
 
             if (data.destinationImage && data.destinationImage.length > 0) {
                 const file = data.destinationImage[0];
@@ -62,10 +70,26 @@ const Itinerary = () => {
             console.log(data);
 
             console.log(formData);
+            mutate(formData);
+            reset();
         } catch (error) {
             console.log(error);
         }
     };
+
+    if (error) {
+        toast.error(`API Error: ${error.message}`, {
+            toastId: "apiError1",
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
 
     const onCancelClick = () => {
         clearErrors();
