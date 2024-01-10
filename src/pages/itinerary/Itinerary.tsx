@@ -1,12 +1,15 @@
 import { ArrowLeft, Calendar } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { isValid, isAfter } from "date-fns";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { ItineraryData } from "../../types";
+import { toast } from "react-toastify";
+import { useAuthStore } from "../../store";
 
 const Itinerary = () => {
+    const { user } = useAuthStore();
     const {
         control,
         register,
@@ -16,17 +19,56 @@ const Itinerary = () => {
         formState: { errors },
     } = useForm<ItineraryData>();
 
-    const onSubmit: SubmitHandler<ItineraryData> = (data) => {
-        const formData = new FormData();
+    const validateDateOrder = (startDate: number | Date, endDate: number | Date) => {
+        if (!isValid(startDate) || !isValid(endDate)) {
+            return "Please enter valid dates";
+        }
+        if (!isAfter(endDate, startDate)) {
+            return "End date must be a future date of start date";
+        }
+        return true;
+    };
 
-        console.log(formData);
-        reset();
+    const onSubmit: SubmitHandler<ItineraryData> = (data) => {
+        try {
+            // validate Dates
+            const dateValidationResult = validateDateOrder(
+                new Date(data.startDateTime),
+                new Date(data.endDateTime),
+            );
+            if (dateValidationResult !== true) {
+                toast.error(dateValidationResult);
+                return;
+            }
+            const formData = new FormData();
+            formData.append("tripTitle", data.tripTitle);
+            formData.append("tripDescription", data.tripDescription);
+            formData.append("tripDuration", data.tripDuration);
+            formData.append("startDateTime", new Date(data.startDateTime).toISOString());
+            formData.append("endDateTime", new Date(data.endDateTime).toISOString());
+            formData.append("startPoint", data.startPoint);
+            formData.append("endingPoint", data.endingPoint);
+
+            if (data.destinationImage && data.destinationImage.length > 0) {
+                const file = data.destinationImage[0];
+                if (file instanceof File) {
+                    formData.append("destinationImage", file);
+                } else {
+                    toast.error("Invalid file format for Destination Image");
+                    return;
+                }
+            }
+
+            console.log(data);
+
+            console.log(formData);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const onCancelClick = () => {
-        // Clear all validation errors
         clearErrors();
-        // Reset the form
         reset();
     };
 
