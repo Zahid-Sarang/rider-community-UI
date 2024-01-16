@@ -36,7 +36,7 @@ const Itinerary = () => {
         return true;
     };
 
-    const onSubmit: SubmitHandler<ItineraryData> = (data) => {
+    const onSubmit: SubmitHandler<ItineraryData> = async (data) => {
         try {
             // validate Dates
             const dateValidationResult = validateDateOrder(
@@ -66,11 +66,8 @@ const Itinerary = () => {
                     return;
                 }
             }
-
-            console.log(data);
-
-            console.log(formData);
             mutate(formData);
+
             reset();
         } catch (error) {
             console.log(error);

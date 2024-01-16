@@ -9,6 +9,7 @@ import ProfilePage from "./pages/profile/Profile";
 import RegisterPage from "./pages/register/Register";
 import UpdateProfilePage from "./pages/profile/UpdateProfile";
 import ItineraryPage from "./pages/itinerary/Itinerary";
+import MemoryPage from "./pages/memories/Memory";
 
 export const router = createBrowserRouter([
     {
@@ -32,8 +33,12 @@ export const router = createBrowserRouter([
                         element: <UpdateProfilePage />,
                     },
                     {
-                        path: "/create-itinerary",
+                        path: "/create-itineraries",
                         element: <ItineraryPage />,
+                    },
+                    {
+                        path: "/create-memories",
+                        element: <MemoryPage />,
                     },
                 ],
             },

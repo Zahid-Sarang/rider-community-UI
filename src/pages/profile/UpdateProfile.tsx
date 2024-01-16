@@ -31,7 +31,6 @@ const UpdateProfile = () => {
         onSuccess: async () => {
             const selfDataPromise = await refetch();
             setUser(selfDataPromise.data);
-            reset();
         },
     });
 
@@ -57,6 +56,8 @@ const UpdateProfile = () => {
 
         console.log(formData);
         mutate(formData);
+        reset();
+        toast.success("Profile Update! ");
     };
 
     if (error) {

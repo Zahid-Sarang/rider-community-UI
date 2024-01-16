@@ -49,7 +49,7 @@ export const NavLinks = [
         title: "Create Memory ",
     },
     {
-        url: "/create-itinerary",
+        url: "/create-itineraries",
         Icon: MapPinned,
         title: "Create Itinerary",
     },

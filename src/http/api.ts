@@ -1,4 +1,4 @@
-import { Credentials, ItineraryData, RegisterData, UpdateUserData } from "../types";
+import { Credentials, ItineraryData, MemoryData, RegisterData, UpdateUserData } from "../types";
 import { api } from "./client";
 
 export const registerApi = (registerData: RegisterData) => api.post("/auth/register", registerData);
@@ -14,6 +14,13 @@ export const updateUserApi = (userId: number | undefined, updateUserData: Update
 
 export const itineraryApi = (data: ItineraryData) =>
     api.post("/itinerary", data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+
+    export const memoryApi = (data: MemoryData) =>
+    api.post("/memory", data, {
         headers: {
             "Content-Type": "multipart/form-data",
         },

@@ -40,3 +40,10 @@ export type ItineraryData = {
     destinationImage: FileList | string;
     userId?: number;
 };
+
+export type MemoryData = {
+    title: string;
+    description: string;
+    image: FileList | string;
+    userId?: number;
+};
