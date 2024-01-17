@@ -10,6 +10,7 @@ import RegisterPage from "./pages/register/Register";
 import UpdateProfilePage from "./pages/profile/UpdateProfile";
 import ItineraryPage from "./pages/itinerary/Itinerary";
 import MemoryPage from "./pages/memories/Memory";
+import ExplorePage from "./pages/explore/Explore";
 
 export const router = createBrowserRouter([
     {
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
                     {
                         path: "/create-memories",
                         element: <MemoryPage />,
+                    },
+                    {
+                        path: "/explore",
+                        element: <ExplorePage />,
                     },
                 ],
             },

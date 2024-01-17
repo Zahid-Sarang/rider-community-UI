@@ -21,16 +21,16 @@ const UpdateProfile = () => {
 
     const updateUser = async (updateDate: UpdateUserData) => {
         const { data } = await updateUserApi(user?.id, updateDate);
-        console.log("data", data);
         return data;
     };
 
     const { mutate, error } = useMutation({
         mutationKey: ["updateProfile"],
         mutationFn: updateUser,
-        onSuccess: async () => {
+        onSuccess: async (data) => {
             const selfDataPromise = await refetch();
             setUser(selfDataPromise.data);
+            toast.success(data.message || "Profile Updated!");
         },
     });
 
@@ -57,7 +57,6 @@ const UpdateProfile = () => {
         console.log(formData);
         mutate(formData);
         reset();
-        toast.success("Profile Update! ");
     };
 
     if (error) {
