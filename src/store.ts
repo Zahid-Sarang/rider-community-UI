@@ -1,6 +1,13 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
+export interface Memories {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+}
+
 export interface User {
     id: number;
     firstName: string;
@@ -12,6 +19,7 @@ export interface User {
     bio: string;
     location: string;
     bikeDetails: string;
+    memories: Memories[];
 }
 
 interface AuthState {

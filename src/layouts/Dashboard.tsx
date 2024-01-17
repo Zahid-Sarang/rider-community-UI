@@ -11,7 +11,7 @@ const Home = () => {
         <>
             <Sidebar />
             <main className="2xl:ml-[--w-side] xl:ml-[--w-side-md] md:ml-[--w-side-small]">
-                <div className="max-w-2xl pt-10 pb-10 pl-4 pr-4 mx-auto">
+                <div className="pt-10 pb-10 pl-4 pr-4 mx-auto max-w-[935px]">
                     <Outlet />
                 </div>
             </main>

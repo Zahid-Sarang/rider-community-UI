@@ -60,6 +60,7 @@ const Memory = () => {
                 }
             }
             mutate(formData);
+            reset();
 
             console.log(formData);
         } catch (error) {

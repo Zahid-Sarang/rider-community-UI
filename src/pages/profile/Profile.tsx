@@ -1,6 +1,7 @@
-import { Camera, Settings } from "lucide-react";
-import { Link } from "react-router-dom";
+import { BikeIcon, Camera, CameraIcon, PlaneIcon, Settings } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
 import profilePlaceHolder from "../../assets/profile.jpg";
+import MemoriesCard from "../../components/memories/Card";
 import { useAuthStore } from "../../store";
 
 const Profile = () => {
@@ -36,13 +37,25 @@ const Profile = () => {
                         <p className="mt-2 text-sm font-light md:font-normal text-primary">
                             {user?.bio}
                         </p>
+                        <p className="mt-2 text-sm font-light md:font-normal text-primary">
+                            <span className="flex items-center gap-2 font-bold">
+                                <BikeIcon style={{ color: "#DB2677" }} />
+                                {user?.bikeDetails}
+                            </span>
+                        </p>
                         <div className="flex justify-between gap-4 mt-4 md:items-end md:mt-8 max-md:flex-col">
                             <div className="flex gap-6 text-xs sm:gap-10 sm:text-sm max-sm:absolute max-sm:top-10 max-sm:left-36">
                                 {/* followers count */}
                                 <div>
-                                    <p className="text-primary">Posts</p>
+                                    <p className="text-primary">Memories</p>
                                     <h3 className="mt-1 text-base font-normal sm:text-xl sm:font-bold text-primary">
                                         102
+                                    </h3>
+                                </div>
+                                <div>
+                                    <p className="text-primary">Friends</p>
+                                    <h3 className="mt-1 text-base font-normal sm:text-xl sm:font-bold text-primary">
+                                        103
                                     </h3>
                                 </div>
                                 <div>
@@ -78,8 +91,68 @@ const Profile = () => {
                 </div>
             </div>
 
+            {/* Bikes crousal */}
+            <div className="flex flex-col py-3 mt-10">
+                <h1 className="text-xl font-bold text-black dark:text-white">Bike's</h1>
+                <div className="mt-5">
+                    <img src={user?.coverPhoto} alt="Bike images" className="rounded-2xl" />
+                </div>
+            </div>
             {/*  post section */}
-            <div className="mt-10"></div>
+            <div className="mt-10">
+                <nav className="flex text-sm font-semibold text-secondary">
+                    <ul className="flex gap-10 mx-auto justify-evenly">
+                        <li>
+                            <NavLink
+                                to="/profile"
+                                className="flex gap-2"
+                                style={{
+                                    color:
+                                        window.location.pathname === "/profile"
+                                            ? "#DB2677"
+                                            : "#ffffffb2",
+                                }}
+                            >
+                                <span>
+                                    <CameraIcon />
+                                </span>
+                                Memories
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                to="/profile/itineraries"
+                                className="flex gap-2"
+                                style={{
+                                    color:
+                                        window.location.pathname === "/profile/itineraries"
+                                            ? "#DB2677"
+                                            : "#ffffffb2",
+                                }}
+                            >
+                                <span>
+                                    <PlaneIcon />
+                                </span>
+                                Itineraries
+                            </NavLink>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            {/* Memories */}
+            <div className="mt-10">
+                {user?.memories.map((memory) => (
+                    <MemoriesCard
+                        title={memory.title}
+                        firstName={user.firstName}
+                        lastName={user.lastName}
+                        profilePhoto={user?.profilePhoto}
+                        description={memory.description}
+                        key={memory.id}
+                        image={memory.image}
+                    />
+                ))}
+            </div>
         </>
     );
 };
