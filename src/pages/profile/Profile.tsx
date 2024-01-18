@@ -1,4 +1,4 @@
-import { BikeIcon, Camera, CameraIcon, PlaneIcon, Settings } from "lucide-react";
+import { BikeIcon, Camera, CameraIcon, MapPin, PlaneIcon, Settings } from "lucide-react";
 import { ReactNode } from "react";
 import { Link, NavLink } from "react-router-dom";
 import profilePlaceHolder from "../../assets/profile.jpg";
@@ -46,6 +46,12 @@ const Profile: React.FC<ProfileProps> = ({ children }) => {
                             <span className="flex items-center gap-2 font-bold">
                                 <BikeIcon style={{ color: "#DB2677" }} />
                                 {user?.bikeDetails}
+                            </span>
+                        </p>
+                        <p className="mt-2 text-sm font-light md:font-normal text-primary">
+                            <span className="flex items-center gap-2 font-bold text-follow-btn">
+                                <MapPin />
+                                {user?.location}
                             </span>
                         </p>
                         <div className="flex justify-between gap-4 mt-4 md:items-end md:mt-8 max-md:flex-col">
