@@ -1,12 +1,17 @@
 import { BikeIcon, Camera, CameraIcon, PlaneIcon, Settings } from "lucide-react";
+import { ReactNode } from "react";
 import { Link, NavLink } from "react-router-dom";
 import profilePlaceHolder from "../../assets/profile.jpg";
-import MemoriesCard from "../../components/memories/Card";
+import MemoriesGrid from "../../components/memories/MemoriesGrid";
 import { useAuthStore } from "../../store";
 
-const Profile = () => {
+interface ProfileProps {
+    children: ReactNode;
+}
+
+const Profile: React.FC<ProfileProps> = ({ children }) => {
     const { user } = useAuthStore();
-    console.log(user?.profilePhoto);
+
     return (
         <>
             {/* profile info */}
@@ -90,15 +95,7 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Bikes crousal */}
-            <div className="flex flex-col py-3 mt-10">
-                <h1 className="text-xl font-bold text-black dark:text-white">Bike's</h1>
-                <div className="mt-5">
-                    <img src={user?.coverPhoto} alt="Bike images" className="rounded-2xl" />
-                </div>
-            </div>
-            {/*  post section */}
+            {/*  toggel */}
             <div className="mt-10">
                 <nav className="flex text-sm font-semibold text-secondary">
                     <ul className="flex gap-10 mx-auto justify-evenly">
@@ -139,19 +136,18 @@ const Profile = () => {
                     </ul>
                 </nav>
             </div>
+
+            {/* Bikes crousal */}
+            <div className="flex flex-col py-3 mt-10">
+                <h1 className="text-xl font-bold text-primary">Bike's</h1>
+                <div className="mt-5">
+                    <img src={user?.coverPhoto} alt="Bike images" className="rounded-2xl" />
+                </div>
+            </div>
+
             {/* Memories */}
-            <div className="mt-10">
-                {user?.memories.map((memory) => (
-                    <MemoriesCard
-                        title={memory.title}
-                        firstName={user.firstName}
-                        lastName={user.lastName}
-                        profilePhoto={user?.profilePhoto}
-                        description={memory.description}
-                        key={memory.id}
-                        image={memory.image}
-                    />
-                ))}
+            <div className="mt-8">
+                <MemoriesGrid />
             </div>
         </>
     );

@@ -26,11 +26,10 @@ const Card = ({ title, description, image, profilePhoto, firstName, lastName }: 
                     <div className="flex-1">
                         <Link to="/">
                             <h4 className=" text-primary">
-                                {firstName}
-                                {""}
-                                {lastName}
+                                {firstName} {lastName}
                             </h4>
                         </Link>
+                        <div className="text-xs text-gray-500 dark:text-white/80">{title}</div>
                     </div>
                     <div className="-mr-1">
                         <MoreHorizontal color="#fff" />
@@ -58,7 +57,9 @@ const Card = ({ title, description, image, profilePhoto, firstName, lastName }: 
                         </span>
                         <span>260</span>
                     </div>
-                    <div className="sm:p-4 p-2.5 border-t  font-normal space-y-3 relative border-slate-700/40">
+                </div>
+                <div className="sm:p-4 p-2.5 border-t border-gray-100 font-normal space-y-3 relative dark:border-slate-700/40">
+                    <div className="sm:p-4 p-2.5 flex items-center gap-4 text-sm font-semibold text-primary">
                         <p className="mt-0.5">{description}</p>
                     </div>
                 </div>

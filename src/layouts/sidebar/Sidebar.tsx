@@ -43,7 +43,12 @@ const Sidebar = () => {
                     {/* NavBar */}
                     <nav className="flex-1 max-md:flex max-md:justify-around md:space-y-2 xl:mt-20 xl:ml-10">
                         {NavLinks.map((item) => (
-                            <NavBarLink url={item.url} Icon={item.Icon} title={item.title} />
+                            <NavBarLink
+                                url={item.url}
+                                Icon={item.Icon}
+                                title={item.title}
+                                key={item.url}
+                            />
                         ))}
                     </nav>
                     {/* Logout Button */}
