@@ -58,10 +58,26 @@ const Card = ({ title, description, image, profilePhoto, firstName, lastName }: 
                         <span>260</span>
                     </div>
                 </div>
-                <div className="sm:p-4 p-2.5 border-t border-gray-100 font-normal space-y-3 relative dark:border-slate-700/40">
+                <div className="sm:p-4 p-2.5 border-t  font-normal space-y-3 relative border-slate-700/40">
                     <div className="sm:p-4 p-2.5 flex items-center gap-4 text-sm font-semibold text-primary">
                         <p className="mt-0.5">{description}</p>
                     </div>
+                </div>
+                <div className="sm:px-4 sm:py-3 p-2.5 border-t  flex items-center gap-1 border-slate-700/40">
+                    <img src={profilePhoto} alt="active-user" className="w-6 h-6 rounded-full" />
+                    <div className="relative flex-1 h-10 overflow-hidden">
+                        <textarea
+                            placeholder="Add Comments..."
+                            rows={1}
+                            className="w-full text-primary border-none resize-none !bg-transparent px-4 py-2 focus:!border-transparent focus:!ring-transparent"
+                        ></textarea>
+                    </div>
+                    <button
+                        type="submit"
+                        className="text-sm text-primary rounded-full py-1.5 px-3.5 bg-follow-btn"
+                    >
+                        Replay
+                    </button>
                 </div>
             </div>
         </>
