@@ -37,7 +37,9 @@ const UpdateProfile = () => {
     const onSubmit: SubmitHandler<UpdateUserData> = async (data) => {
         console.log(data);
         const formData = new FormData();
-        formData.append("userName", data.userName || user?.userName || "");
+        if (data.userName) {
+            formData.append("userName", data.userName);
+        }
         formData.append("firstName", data.firstName || user?.firstName || "");
         formData.append("lastName", data.lastName || user?.lastName || "");
         formData.append("location", data.location || user?.location || "");
