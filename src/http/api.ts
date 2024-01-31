@@ -19,9 +19,11 @@ export const itineraryApi = (data: ItineraryData) =>
         },
     });
 
-    export const memoryApi = (data: MemoryData) =>
+export const memoryApi = (data: MemoryData) =>
     api.post("/memory", data, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
     });
+
+export const unFollowedUser = (userId: number) => api.get(`users/${userId}/unfollowedUsers`);

@@ -47,3 +47,16 @@ export type MemoryData = {
     image: FileList | string;
     userId?: number;
 };
+
+export interface UnfollowedData {
+    id: number;
+    firstName: string;
+    lastName: string;
+    userName: string;
+    email: string;
+    profilePhoto: string;
+    coverPhoto: string;
+    bio: string;
+    location: string;
+    bikeDetails: string;
+}
