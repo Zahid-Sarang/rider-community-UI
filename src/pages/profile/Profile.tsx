@@ -147,7 +147,7 @@ const Profile: React.FC<ProfileProps> = ({ children }) => {
             <div className="flex flex-col py-3 mt-10">
                 <h1 className="text-xl font-bold text-primary">Bike's</h1>
                 <div className="mt-5">
-                    <img src={user?.coverPhoto} alt="Bike images" className="rounded-2xl" />
+                    {<img src={user?.coverPhoto} alt="Bike images" className="rounded-2xl" />}
                 </div>
             </div>
 

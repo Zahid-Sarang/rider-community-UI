@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { Image, RefreshCcw } from "lucide-react";
-import { UnfollowedData } from "../types";
+import { MemoryData, UnfollowedData } from "../types";
 import Card from "../components/memories/Card";
 import UserSuggestion from "../components/suggestion/UserSuggestion";
-import { unFollowedUser } from "../http/api";
+import { unFollowedUser, usersMemories } from "../http/api";
 import { useAuthStore } from "../store";
 
 function HomePage() {
@@ -17,7 +17,17 @@ function HomePage() {
             }
         },
     });
-    console.log("unfollowed users", unFollowedUsersData);
+
+    // fetch users memories
+
+    const { data: memoriesData } = useQuery({
+        queryKey: ["memories"],
+        queryFn: () => {
+            if (user?.id) {
+                return usersMemories(user.id).then((res) => res.data);
+            }
+        },
+    });
 
     return (
         <>
@@ -38,18 +48,22 @@ function HomePage() {
                         </div>
                     </div>
                     {/* Memories */}
-                    <div className="text-sm font-medium shadow-sm bg-sidebar-bg rounded-xl border1 ">
-                        {user?.memories.map((memory) => (
-                            <Card
-                                title={memory.title}
-                                description={memory.description}
-                                image={memory.image}
-                                profilePhoto={user.profilePhoto}
-                                firstName={user.firstName}
-                                lastName={user.lastName}
-                            />
+                    {memoriesData &&
+                        memoriesData.map((memory, index: number) => (
+                            <div
+                                key={index}
+                                className="text-sm font-medium shadow-sm bg-sidebar-bg rounded-xl border1"
+                            >
+                                <Card
+                                    title={memory.title}
+                                    description={memory.description}
+                                    image={memory.image}
+                                    profilePhoto={memory.user.profilePhoto}
+                                    firstName={memory.user.firstName}
+                                    lastName={memory.user.lastName}
+                                />
+                            </div>
                         ))}
-                    </div>
                 </div>
                 {/* right sidebar */}
                 <div className="mx-auto w-96 ">

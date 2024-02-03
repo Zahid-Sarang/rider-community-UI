@@ -1,5 +1,6 @@
 import { Heart, MessageCircleMore, MoreHorizontal } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../../store";
 
 interface Memories {
     title: string;
@@ -11,9 +12,11 @@ interface Memories {
 }
 
 const Card = ({ title, description, image, profilePhoto, firstName, lastName }: Memories) => {
+    const { user } = useAuthStore();
+    console.log(user);
     return (
         <>
-            <div className="text-sm font-medium shadow-sm bg-sidebar-bg rounded-xl border1 ">
+            <div className="my-4 font-medium shadow-sm text5-sm bg-sidebar-bg rounded-xl border1">
                 {/* heading */}
                 <div className="flex gap-3 sm:p-4 p-2.5 text-sm font-medium">
                     <Link to="/">
@@ -36,14 +39,21 @@ const Card = ({ title, description, image, profilePhoto, firstName, lastName }: 
                     </div>
                 </div>
                 {/* image */}
-                <div className="relative w-full h-full lg:h-72 sm:px-4">
-                    <img
-                        src={image}
-                        alt="Memory-Image"
-                        className="object-cover w-full h-full sm:rounded-lg"
-                    />
-                </div>
+                {image && (
+                    <div className="relative w-full h-full lg:h-72 sm:px-4">
+                        <img
+                            src={image}
+                            alt="Memory-Image"
+                            className="object-cover w-full h-full sm:rounded-lg"
+                        />
+                    </div>
+                )}
                 {/* Likes and commenst icons */}
+                <div className="sm:p-4 p-2.5 border-t  font-normal space-y-3 relative border-slate-700/40">
+                    <div className="sm:p-4 p-2.5 flex items-center gap-4 text-sm font-semibold text-primary">
+                        <p className="mt-0.5">{description}</p>
+                    </div>
+                </div>
                 <div className="sm:p-4 p-2.5 flex items-center gap-4 text-xs font-semibold">
                     <div className="flex items-center gap-2.5 text-primary">
                         <span>
@@ -58,12 +68,8 @@ const Card = ({ title, description, image, profilePhoto, firstName, lastName }: 
                         <span>260</span>
                     </div>
                 </div>
-                <div className="sm:p-4 p-2.5 border-t  font-normal space-y-3 relative border-slate-700/40">
-                    <div className="sm:p-4 p-2.5 flex items-center gap-4 text-sm font-semibold text-primary">
-                        <p className="mt-0.5">{description}</p>
-                    </div>
-                </div>
-                <div className="sm:px-4 sm:py-3 p-2.5 border-t  flex items-center gap-1 border-slate-700/40">
+
+                <div className="sm:px-4 sm:py-3 p-2.5 border-t  flex items-center gap-2 border-slate-700/40">
                     <img src={profilePhoto} alt="active-user" className="w-6 h-6 rounded-full" />
                     <div className="relative flex-1 h-10 overflow-hidden">
                         <textarea

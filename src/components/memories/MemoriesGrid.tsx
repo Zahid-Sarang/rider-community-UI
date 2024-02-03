@@ -18,11 +18,17 @@ const MemoriesGrid = () => {
                         <div className="duration-500 delay-100 lg:hover:scale-105 hover:shadow-lg hover:z-10">
                             <div className="relative overflow-hidden rounded-lg uk-transition-toggle">
                                 <div className="relative w-full lg:h-60 h-full aspect-[3/3]">
-                                    <img
-                                        src={memory.image}
-                                        alt={memory.title}
-                                        className="object-cover w-full h-full"
-                                    />
+                                    {memory.image ? (
+                                        <img
+                                            src={memory.image}
+                                            alt={memory.title}
+                                            className="object-cover w-full h-full"
+                                        />
+                                    ) : (
+                                        <div className="flex items-center p-2 text-sm font-bold text-primary">
+                                            {memory.description}
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="absolute inset-0 bg-white/5 hover:backdrop-blur-sm ">
