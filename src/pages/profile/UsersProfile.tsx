@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import Spinner from "../../components/loading/Spinner";
 import MemoriesGrid from "../../components/memories/MemoriesGrid";
 import ContentSwitch from "../../components/profile/ContentSwitch";
 import ProfileSection from "../../components/profile/ProfileSection";
@@ -26,6 +28,7 @@ const UsersProfile = () => {
         data: userInfo,
         isLoading,
         isError,
+        error,
     } = useQuery({
         queryKey: ["usersInfo"],
         queryFn: async () => {
@@ -34,11 +37,16 @@ const UsersProfile = () => {
         },
     });
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <Spinner />;
     }
 
     if (isError) {
-        return <div>Error fetching user data</div>;
+        toast.error("Error fetching user data"); // Display error toast
+        return (
+            <>
+                <div>Error fetching user data</div>
+            </>
+        );
     }
 
     if (!userInfo) {
