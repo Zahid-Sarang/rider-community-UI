@@ -1,15 +1,11 @@
 import { BikeIcon, Camera, CameraIcon, MapPin, PlaneIcon, Settings } from "lucide-react";
-import { ReactNode } from "react";
+
 import { Link, NavLink } from "react-router-dom";
 import profilePlaceHolder from "../../assets/profile.jpg";
 import MemoriesGrid from "../../components/memories/MemoriesGrid";
 import { useAuthStore } from "../../store";
 
-interface ProfileProps {
-    children: ReactNode;
-}
-
-const Profile: React.FC<ProfileProps> = ({ children }) => {
+const Profile = () => {
     const { user } = useAuthStore();
 
     return (
@@ -64,13 +60,13 @@ const Profile: React.FC<ProfileProps> = ({ children }) => {
                                     </h3>
                                 </div>
                                 <div>
-                                    <p className="text-primary">Friends</p>
+                                    <p className="text-primary">Followers</p>
                                     <h3 className="mt-1 text-base font-normal sm:text-xl sm:font-bold text-primary">
                                         103
                                     </h3>
                                 </div>
                                 <div>
-                                    <p className="text-primary">Buddies</p>
+                                    <p className="text-primary">Following</p>
                                     <h3 className="mt-1 text-base font-normal sm:text-xl sm:font-bold text-primary">
                                         103
                                     </h3>
@@ -144,12 +140,16 @@ const Profile: React.FC<ProfileProps> = ({ children }) => {
             </div>
 
             {/* Bikes crousal */}
-            <div className="flex flex-col py-3 mt-10">
-                <h1 className="text-xl font-bold text-primary">Bike's</h1>
-                <div className="mt-5">
-                    {<img src={user?.coverPhoto} alt="Bike images" className="rounded-2xl" />}
-                </div>
-            </div>
+            {/* <div className="flex flex-col py-3 mt-10">
+                {user?.coverPhoto && (
+                    <>
+                        <h1 className="text-xl font-bold text-primary">Bike's</h1>
+                        <div className="mt-5">
+                            <img src={user?.coverPhoto} alt="Bike images" className="rounded-2xl" />
+                        </div>
+                    </>
+                )}
+            </div> */}
 
             {/* Memories */}
             <div className="mt-8">

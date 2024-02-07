@@ -1,11 +1,12 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuthStore } from "../store";
 import Sidebar from "./sidebar/Sidebar";
 
 const Home = () => {
+    const location = useLocation();
     const { user } = useAuthStore();
     if (user === null) {
-        return <Navigate to="/auth/login" replace={true} />;
+        return <Navigate to={`/auth/login?returnTo=${location.pathname}`} replace={true} />;
     }
     return (
         <>

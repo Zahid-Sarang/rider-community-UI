@@ -11,6 +11,7 @@ import UpdateProfilePage from "./pages/profile/UpdateProfile";
 import ItineraryPage from "./pages/itinerary/Itinerary";
 import MemoryPage from "./pages/memories/Memory";
 import ExplorePage from "./pages/explore/Explore";
+import UsersProfile from "./pages/profile/UsersProfile";
 
 export const router = createBrowserRouter([
     {
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
                     {
                         path: "/update-profile",
                         element: <UpdateProfilePage />,
+                    },
+                    {
+                        path: "/profile/:id",
+                        element: <UsersProfile />,
                     },
                     {
                         path: "/create-itineraries",
