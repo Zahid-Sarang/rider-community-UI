@@ -29,6 +29,8 @@ function HomePage() {
         },
     });
 
+    console.log("memoriesData", memoriesData);
+
     return (
         <>
             <div className="flex max-lg:flex-col xl:gap-10 md:gap-3 md:mt-10">
@@ -61,6 +63,7 @@ function HomePage() {
                                     profilePhoto={memory.user.profilePhoto}
                                     firstName={memory.user.firstName}
                                     lastName={memory.user.lastName}
+                                    likes={memory.likes.length}
                                 />
                             </div>
                         ))}

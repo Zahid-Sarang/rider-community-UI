@@ -21,8 +21,8 @@ const Profile = () => {
                 bikeDetails={user!.bikeDetails}
                 location={user!.location}
                 MemoriesCount={user!.memories.length}
-                FollowersCount={12}
-                FollowingCount={10}
+                FollowersCount={user!.followers.length}
+                FollowingCount={user!.following.length}
                 canUpdate={true}
             />
             {/*  toggel */}

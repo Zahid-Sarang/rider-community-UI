@@ -6,6 +6,7 @@ export interface Memories {
     title: string;
     description: string;
     image: string;
+    likes: [];
 }
 
 export interface User {
@@ -20,6 +21,8 @@ export interface User {
     location: string;
     bikeDetails: string;
     memories: Memories[];
+    followers: [];
+    following: [];
 }
 
 interface AuthState {

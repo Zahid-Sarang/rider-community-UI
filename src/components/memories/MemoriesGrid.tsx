@@ -5,7 +5,6 @@ import { useAuthStore } from "../../store";
 
 const MemoriesGrid = () => {
     const { user } = useAuthStore();
-    console.log(user);
     return (
         <>
             {/* <Profile> */}

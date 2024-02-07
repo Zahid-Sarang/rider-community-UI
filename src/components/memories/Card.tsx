@@ -9,9 +9,18 @@ interface Memories {
     firstName: string;
     lastName: string;
     profilePhoto?: string;
+    likes: number;
 }
 
-const Card = ({ title, description, image, profilePhoto, firstName, lastName }: Memories) => {
+const Card = ({
+    title,
+    description,
+    image,
+    profilePhoto,
+    firstName,
+    lastName,
+    likes,
+}: Memories) => {
     const { user } = useAuthStore();
     console.log(user);
     return (
@@ -59,7 +68,7 @@ const Card = ({ title, description, image, profilePhoto, firstName, lastName }: 
                         <span>
                             <Heart />{" "}
                         </span>
-                        <span>102</span>
+                        <span>{likes}</span>
                     </div>
                     <div className="flex items-center gap-3 text-primary">
                         <span>
