@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Image, RefreshCcw } from "lucide-react";
-import { MemoryData, UnfollowedData } from "../types";
+import { UnfollowedData } from "../types";
 import Card from "../components/memories/Card";
 import UserSuggestion from "../components/suggestion/UserSuggestion";
 import { unFollowedUser, usersMemories } from "../http/api";

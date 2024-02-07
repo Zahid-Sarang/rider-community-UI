@@ -11,11 +11,11 @@ interface Suggestions {
 const UserSuggestion = ({ profile, userName, firstName, lastName, targetUserId }: Suggestions) => {
     return (
         <div className="flex items-center gap-3 mt-4">
-            <Link to="/">
+            <Link to={`/profile/${targetUserId}`}>
                 <img src={profile} alt={userName} className="w-10 h-10 bg-gray-200 rounded-full" />
             </Link>
             <div className="flex-1">
-                <Link to="/" className="text-sm font-semibold text-white">
+                <Link to={`/profile/${targetUserId}`} className="text-sm font-semibold text-white">
                     {firstName} {lastName}
                 </Link>
                 <div className="mt-0.5 text-secondary">Suggested For You</div>

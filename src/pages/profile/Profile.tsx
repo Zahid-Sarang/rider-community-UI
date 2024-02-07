@@ -1,8 +1,5 @@
-import { BikeIcon, Camera, CameraIcon, MapPin, PlaneIcon, Settings } from "lucide-react";
-
-import { Link, NavLink } from "react-router-dom";
-import profilePlaceHolder from "../../assets/profile.jpg";
 import MemoriesGrid from "../../components/memories/MemoriesGrid";
+import ContentSwitch from "../../components/profile/ContentSwitch";
 import ProfileSection from "../../components/profile/ProfileSection";
 import { useAuthStore } from "../../store";
 
@@ -25,48 +22,8 @@ const Profile = () => {
                 FollowingCount={user!.following.length}
                 canUpdate={true}
             />
-            {/*  toggel */}
-            <div className="mt-10">
-                <nav className="flex text-sm font-semibold text-secondary">
-                    <ul className="flex gap-10 mx-auto justify-evenly">
-                        <li>
-                            <NavLink
-                                to="/profile"
-                                className="flex gap-2"
-                                style={{
-                                    color:
-                                        window.location.pathname === "/profile"
-                                            ? "#DB2677"
-                                            : "#ffffffb2",
-                                }}
-                            >
-                                <span>
-                                    <CameraIcon />
-                                </span>
-                                Memories
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                to="/profile/itineraries"
-                                className="flex gap-2"
-                                style={{
-                                    color:
-                                        window.location.pathname === "/profile/itineraries"
-                                            ? "#DB2677"
-                                            : "#ffffffb2",
-                                }}
-                            >
-                                <span>
-                                    <PlaneIcon />
-                                </span>
-                                Itineraries
-                            </NavLink>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-
+            {/*  content switch */}
+            <ContentSwitch />
             {/* Bikes crousal */}
             {/* <div className="flex flex-col py-3 mt-10">
                 {user?.coverPhoto && (

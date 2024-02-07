@@ -1,7 +1,6 @@
-import { BikeIcon, Camera, CameraIcon, MapPin, PlaneIcon, Settings } from "lucide-react";
-import { Link, NavLink } from "react-router-dom";
+import { BikeIcon, Camera, MapPin, Settings } from "lucide-react";
+import { Link } from "react-router-dom";
 import profilePlaceHolder from "../../assets/profile.jpg";
-import { useAuthStore } from "../../store";
 
 interface ProfileInfo {
     profilePhoto?: string;
