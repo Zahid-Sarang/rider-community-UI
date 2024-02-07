@@ -1,10 +1,17 @@
+import { useState } from "react";
 import MemoriesGrid from "../../components/memories/MemoriesGrid";
 import ContentSwitch from "../../components/profile/ContentSwitch";
 import ProfileSection from "../../components/profile/ProfileSection";
+import { ITINERARIES, MEMORIES } from "../../constants/constVariable";
 import { useAuthStore } from "../../store";
 
 const Profile = () => {
+    const [content, setContent] = useState<string>(MEMORIES);
     const { user } = useAuthStore();
+
+    const handleChangeContent = (contentData: string) => {
+        setContent(contentData);
+    };
 
     return (
         <>
@@ -23,7 +30,7 @@ const Profile = () => {
                 canUpdate={true}
             />
             {/*  content switch */}
-            <ContentSwitch />
+            <ContentSwitch handleContent={handleChangeContent} content={content} />
             {/* Bikes crousal */}
             {/* <div className="flex flex-col py-3 mt-10">
                 {user?.coverPhoto && (
@@ -37,9 +44,14 @@ const Profile = () => {
             </div> */}
 
             {/* Memories */}
-            <div className="mt-8">
-                <MemoriesGrid />
-            </div>
+            {content === MEMORIES && (
+                <div className="mt-8">
+                    <MemoriesGrid memories={user?.memories || []} />
+                </div>
+            )}
+
+            {/* Itineraries */}
+            {content === ITINERARIES && <h1>Ititneraries</h1>}
         </>
     );
 };

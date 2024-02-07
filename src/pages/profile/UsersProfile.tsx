@@ -1,13 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
+import MemoriesGrid from "../../components/memories/MemoriesGrid";
 import ContentSwitch from "../../components/profile/ContentSwitch";
 import ProfileSection from "../../components/profile/ProfileSection";
+import { MEMORIES } from "../../constants/constVariable";
 import { getUserInfo } from "../../http/api";
 import { useAuthStore } from "../../store";
 
 const UsersProfile = () => {
+    const [content, setContent] = useState<string>(MEMORIES);
     const { user } = useAuthStore();
     const { id } = useParams();
+
+    const handleChangeContent = (contentData: string) => {
+        setContent(contentData);
+    };
 
     if (user?.id === Number(id)) {
         console.log(user.id === Number(id));
@@ -52,7 +60,12 @@ const UsersProfile = () => {
                 FollowingCount={userInfo!.following.length}
                 canUpdate={false}
             />
-            <ContentSwitch />
+            <ContentSwitch handleContent={handleChangeContent} content={content} />
+
+            {/* Memories */}
+            <div className="mt-8">
+                <MemoriesGrid memories={userInfo.memories} />
+            </div>
         </>
     );
 };

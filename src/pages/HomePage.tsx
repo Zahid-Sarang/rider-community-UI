@@ -6,9 +6,21 @@ import UserSuggestion from "../components/suggestion/UserSuggestion";
 import { unFollowedUser, usersMemories } from "../http/api";
 import { useAuthStore } from "../store";
 
+interface Memory {
+    title: string;
+    description: string;
+    image: string;
+    user: {
+        profilePhoto: string;
+        firstName: string;
+        lastName: string;
+    };
+    likes: any[]; // Assuming likes is an array of any type
+    // Define other properties as needed
+}
+
 function HomePage() {
     const { user } = useAuthStore();
-
     const { data: unFollowedUsersData } = useQuery({
         queryKey: ["users"],
         queryFn: () => {
@@ -19,7 +31,6 @@ function HomePage() {
     });
 
     // fetch users memories
-
     const { data: memoriesData } = useQuery({
         queryKey: ["memories"],
         queryFn: () => {
@@ -28,9 +39,6 @@ function HomePage() {
             }
         },
     });
-
-    console.log("memoriesData", memoriesData);
-
     return (
         <>
             <div className="flex max-lg:flex-col xl:gap-10 md:gap-3 md:mt-10">
@@ -51,7 +59,7 @@ function HomePage() {
                     </div>
                     {/* Memories */}
                     {memoriesData &&
-                        memoriesData.map((memory, index: number) => (
+                        memoriesData.map((memory: Memory, index: number) => (
                             <div
                                 key={index}
                                 className="text-sm font-medium shadow-sm bg-sidebar-bg rounded-xl border1"

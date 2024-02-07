@@ -60,3 +60,5 @@ export interface UnfollowedData {
     location: string;
     bikeDetails: string;
 }
+
+

@@ -1,10 +1,18 @@
 import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
-import Profile from "../../pages/profile/Profile";
-import { useAuthStore } from "../../store";
 
-const MemoriesGrid = () => {
-    const { user } = useAuthStore();
+interface Memory {
+    id: number;
+    title: string;
+    image?: string;
+    description: string;
+}
+
+interface Props {
+    memories: Memory[];
+}
+
+const MemoriesGrid = ({ memories }: Props) => {
     return (
         <>
             {/* <Profile> */}
@@ -12,7 +20,7 @@ const MemoriesGrid = () => {
                 <h1 className="text-xl font-bold text-primary">Memories</h1>
             </div>
             <div className="grid grid-cols-2 gap-3 mt-6 lg:grid-cols-4 sm:grid-cols-3">
-                {user?.memories.map((memory) => (
+                {memories.map((memory: Memory) => (
                     <Link to={`/memories/${memory.id}`}>
                         <div className="duration-500 delay-100 lg:hover:scale-105 hover:shadow-lg hover:z-10">
                             <div className="relative overflow-hidden rounded-lg uk-transition-toggle">

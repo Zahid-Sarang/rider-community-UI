@@ -9,9 +9,7 @@ export const getSelf = async () => {
 import {
     Home,
     Search,
-    MessageSquareText,
     RadioTower,
-    BellDot,
     PlusCircle,
     CircleUserRound,
     MapPinned,
@@ -33,16 +31,6 @@ export const NavLinks = [
         Icon: RadioTower,
         title: "Explore",
     },
-    // {
-    //     url: "/message",
-    //     Icon: MessageSquareText,
-    //     title: "Message",
-    // },
-    // {
-    //     url: "/notification",
-    //     Icon: BellDot,
-    //     title: "Notification",
-    // },
     {
         url: "/create-memories",
         Icon: PlusCircle,

@@ -1,7 +1,12 @@
 import { CameraIcon, PlaneIcon } from "lucide-react";
-import { useState } from "react";
-const ContentSwitch = () => {
-    const [content, setContent] = useState<string>("memories");
+import { ITINERARIES, MEMORIES } from "../../constants/constVariable";
+
+interface Content {
+    content: string;
+    handleContent: (contentData: string) => void;
+}
+
+const ContentSwitch = ({ handleContent, content }: Content) => {
     return (
         <>
             <div className="mt-10">
@@ -9,7 +14,7 @@ const ContentSwitch = () => {
                     <ul className="flex gap-10 mx-auto justify-evenly">
                         <li>
                             <button
-                                onClick={() => setContent("memories")}
+                                onClick={() => handleContent(MEMORIES)}
                                 className="flex gap-2"
                                 style={{
                                     color: content === "memories" ? "#DB2677" : "#ffffffb2",
@@ -23,7 +28,7 @@ const ContentSwitch = () => {
                         </li>
                         <li>
                             <button
-                                onClick={() => setContent("itineraries")}
+                                onClick={() => handleContent(ITINERARIES)}
                                 className="flex gap-2"
                                 style={{
                                     color: content === "itineraries" ? "#DB2677" : "#ffffffb2",
