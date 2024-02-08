@@ -14,6 +14,7 @@ interface Memories {
     lastName: string;
     profilePhoto?: string;
     likes: any[];
+    userId: number;
 }
 
 const Card = ({
@@ -25,6 +26,7 @@ const Card = ({
     firstName,
     lastName,
     likes,
+    userId,
 }: Memories) => {
     const { user } = useAuthStore();
     const queryClient = useQueryClient();
@@ -57,7 +59,7 @@ const Card = ({
             <div className="my-4 font-medium shadow-sm text5-sm bg-sidebar-bg rounded-xl border1">
                 {/* heading */}
                 <div className="flex gap-3 sm:p-4 p-2.5 text-sm font-medium">
-                    <Link to="/">
+                    <Link to={`profile/${userId}`}>
                         <img
                             src={profilePhoto}
                             alt="memory image"
@@ -65,7 +67,7 @@ const Card = ({
                         />
                     </Link>
                     <div className="flex-1">
-                        <Link to="/">
+                        <Link to={`profile/${userId}`}>
                             <h4 className=" text-primary">
                                 {firstName} {lastName}
                             </h4>

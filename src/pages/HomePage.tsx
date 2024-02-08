@@ -12,6 +12,7 @@ interface Memory {
     description: string;
     image: string;
     user: {
+        id: number;
         profilePhoto: string;
         firstName: string;
         lastName: string;
@@ -22,7 +23,7 @@ interface Memory {
 function HomePage() {
     const { user } = useAuthStore();
     const { data: unFollowedUsersData } = useQuery({
-        queryKey: ["users"],
+        queryKey: ["unFollowed"],
         queryFn: () => {
             if (user?.id) {
                 return unFollowedUser(user?.id).then((res) => res.data);
@@ -39,7 +40,6 @@ function HomePage() {
             }
         },
     });
-
     console.log("Memories Data", memoriesData);
     return (
         <>
@@ -75,6 +75,7 @@ function HomePage() {
                                     firstName={memory.user.firstName}
                                     lastName={memory.user.lastName}
                                     likes={memory.likes}
+                                    userId={memory.user.id}
                                 />
                             </div>
                         ))}

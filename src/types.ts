@@ -65,3 +65,8 @@ export type addLike = {
     userId: number;
     memoryId: number;
 };
+
+export type follow = {
+    followerId: number;
+    followedId: number;
+};

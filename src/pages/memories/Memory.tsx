@@ -61,8 +61,6 @@ const Memory = () => {
             }
             mutate(formData);
             reset();
-
-            console.log(formData);
         } catch (error) {
             console.log(error);
             toast.error(error);
@@ -145,15 +143,8 @@ const Memory = () => {
                                     <input
                                         className="w-full border-0 rounded-md shadow-sm bg-follow-btn text-primary"
                                         type="file"
-                                        {...register("image", {
-                                            required: "Please upload  Image!",
-                                        })}
+                                        {...register("image")}
                                     />
-                                    {errors.image && (
-                                        <p className="text-secondary-btn" role="alert">
-                                            {errors.image.message}
-                                        </p>
-                                    )}
                                 </div>
                             </div>
                         </div>
