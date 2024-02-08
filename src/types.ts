@@ -61,4 +61,7 @@ export interface UnfollowedData {
     bikeDetails: string;
 }
 
-
+export type addLike = {
+    userId: number;
+    memoryId: number;
+};

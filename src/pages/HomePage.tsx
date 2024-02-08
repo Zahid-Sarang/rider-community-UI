@@ -7,6 +7,7 @@ import { unFollowedUser, usersMemories } from "../http/api";
 import { useAuthStore } from "../store";
 
 interface Memory {
+    id: number;
     title: string;
     description: string;
     image: string;
@@ -15,8 +16,7 @@ interface Memory {
         firstName: string;
         lastName: string;
     };
-    likes: any[]; // Assuming likes is an array of any type
-    // Define other properties as needed
+    likes: any[];
 }
 
 function HomePage() {
@@ -39,6 +39,8 @@ function HomePage() {
             }
         },
     });
+
+    console.log("Memories Data", memoriesData);
     return (
         <>
             <div className="flex max-lg:flex-col xl:gap-10 md:gap-3 md:mt-10">
@@ -65,13 +67,14 @@ function HomePage() {
                                 className="text-sm font-medium shadow-sm bg-sidebar-bg rounded-xl border1"
                             >
                                 <Card
+                                    id={memory.id}
                                     title={memory.title}
                                     description={memory.description}
                                     image={memory.image}
                                     profilePhoto={memory.user.profilePhoto}
                                     firstName={memory.user.firstName}
                                     lastName={memory.user.lastName}
-                                    likes={memory.likes.length}
+                                    likes={memory.likes}
                                 />
                             </div>
                         ))}

@@ -1,18 +1,23 @@
-import { Heart, MessageCircleMore, MoreHorizontal } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Heart, HeartHandshake, MessageCircleMore, MoreHorizontal } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { addLikes } from "../../http/api";
 import { useAuthStore } from "../../store";
 
 interface Memories {
+    id: number;
     title: string;
     description: string;
     image?: string;
     firstName: string;
     lastName: string;
     profilePhoto?: string;
-    likes: number;
+    likes: any[];
 }
 
 const Card = ({
+    id,
     title,
     description,
     image,
@@ -22,7 +27,31 @@ const Card = ({
     likes,
 }: Memories) => {
     const { user } = useAuthStore();
-    console.log(user);
+    const queryClient = useQueryClient();
+    const [liked, setLiked] = useState(false);
+
+    useEffect(() => {
+        if (user && likes.some((like) => like.user.id === user.id)) {
+            setLiked(true);
+        } else {
+            setLiked(false);
+        }
+    }, [user, likes]);
+    const { mutate: Likes } = useMutation({
+        mutationKey: ["likes"],
+        mutationFn: addLikes,
+        onSuccess: async () => {
+            queryClient.invalidateQueries({ queryKey: ["memories"] });
+            return;
+        },
+    });
+
+    const handleAddLikes = async () => {
+        const userId = user!.id;
+        const memoryId = id;
+        await Likes({ userId, memoryId });
+    };
+
     return (
         <>
             <div className="my-4 font-medium shadow-sm text5-sm bg-sidebar-bg rounded-xl border1">
@@ -64,12 +93,13 @@ const Card = ({
                     </div>
                 </div>
                 <div className="sm:p-4 p-2.5 flex items-center gap-4 text-xs font-semibold">
-                    <div className="flex items-center gap-2.5 text-primary">
-                        <span>
-                            <Heart />{" "}
-                        </span>
-                        <span>{likes}</span>
-                    </div>
+                    <button
+                        onClick={handleAddLikes}
+                        className="flex items-center gap-2.5 text-primary"
+                    >
+                        <span>{liked ? <HeartHandshake color="#DB2677" /> : <Heart />} </span>
+                        <span>{likes.length}</span>
+                    </button>
                     <div className="flex items-center gap-3 text-primary">
                         <span>
                             <MessageCircleMore />
