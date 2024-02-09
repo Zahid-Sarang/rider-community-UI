@@ -42,3 +42,5 @@ export const addLikes = (data: addLike) => api.put("memory/addlikes", data);
 export const followUsers = (followData: follow) => api.post("/users/follow", followData);
 export const unFollowUsers = (unFollowData: follow) => api.post("/users/unfollow", unFollowData);
 export const addCommentsApi = (commentData: comments) => api.put("memory/addComment", commentData);
+export const deleteCommentsApi = (commentId: number) =>
+    api.delete(`memory/removeComment/${commentId}`);

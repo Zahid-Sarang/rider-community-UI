@@ -21,6 +21,7 @@ export interface User {
     location: string;
     bikeDetails: string;
     memories: Memories[];
+    comments: { id: number }[];
     followers: [];
     following: [];
 }

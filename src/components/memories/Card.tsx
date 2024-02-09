@@ -5,10 +5,11 @@ import {
     HeartHandshake,
     MessageCircleMore,
     MoreHorizontal,
+    Trash2,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { addCommentsApi, addLikes } from "../../http/api";
+import { addCommentsApi, addLikes, deleteCommentsApi } from "../../http/api";
 import { useAuthStore } from "../../store";
 import profilePlaceHolder from "../../assets/profile.jpg";
 
@@ -59,21 +60,45 @@ const Card = ({
     });
 
     const { mutate: addComment } = useMutation({
-        mutationKey: ["likes"],
+        mutationKey: ["addComment"],
         mutationFn: addCommentsApi,
+        onSuccess: async () => {
+            queryClient.invalidateQueries({ queryKey: ["memories"] });
+            queryClient.invalidateQueries({ queryKey: ["self"] });
+            return;
+        },
+    });
+
+    const { mutate: deleteComment } = useMutation({
+        mutationKey: ["deleteComment"],
+        mutationFn: deleteCommentsApi,
         onSuccess: async () => {
             queryClient.invalidateQueries({ queryKey: ["memories"] });
             return;
         },
     });
 
-    const handleComments = async () => {
+    const handleAddComments = async () => {
         if (commentInputRef.current?.value != null) {
             const text = commentInputRef.current?.value;
             await addComment({ text, userId: user!.id, memoryId: id });
             commentInputRef.current.value = "";
         }
         return;
+    };
+
+    const handleKeyDown = useCallback(
+        (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                handleAddComments();
+            }
+        },
+        [handleAddComments],
+    );
+
+    const handleDeleteComment = async (commentId: number) => {
+        await deleteComment(commentId);
     };
 
     const handleAddLikes = async () => {
@@ -83,6 +108,7 @@ const Card = ({
     };
 
     console.log("memories comments", memoryComments);
+    console.log(user);
     return (
         <>
             <div className="my-4 font-medium shadow-sm text5-sm bg-sidebar-bg rounded-xl border1">
@@ -156,11 +182,25 @@ const Card = ({
                                 <div className="flex-1">
                                     <Link
                                         to={`profile/${comment.user.id}`}
-                                        className="inline-block text-sm font-medium text-primary"
+                                        className="inline-block text-xs font-bold text-primary"
                                     >
-                                        {comment.user.firstName}
+                                        {comment.user.firstName} {comment.user.lastName}
                                     </Link>
-                                    <p className="mt-0.5 text-primary">{comment.text}</p>
+                                    <div className="flex justify-between">
+                                        <p className="mt-0.5 text-primary">{comment.text}</p>
+                                        {user &&
+                                            user.comments &&
+                                            user.comments.find(
+                                                (item) => item.id === comment.id,
+                                            ) && (
+                                                <button
+                                                    onClick={() => handleDeleteComment(comment.id)}
+                                                    className="text-sm text-secondary "
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            )}
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -177,17 +217,22 @@ const Card = ({
                 )}
 
                 <div className="sm:px-4 sm:py-3 p-2.5 border-t  flex items-center gap-2 border-slate-700/40">
-                    <img src={profilePhoto} alt="active-user" className="w-6 h-6 rounded-full" />
+                    <img
+                        src={user!.profilePhoto}
+                        alt="active-user"
+                        className="w-6 h-6 rounded-full"
+                    />
                     <div className="relative flex-1 h-10 overflow-hidden">
                         <textarea
+                            onKeyDown={handleKeyDown}
                             ref={commentInputRef}
                             placeholder="Add Comments..."
                             rows={1}
-                            className="w-full text-primary border-none resize-none !bg-transparent px-4 py-2 focus:!border-transparent focus:!ring-transparent"
+                            className="w-full text-sm text-primary border-none resize-none !bg-transparent px-4 py-2 focus:!border-transparent focus:!ring-transparent"
                         ></textarea>
                     </div>
                     <button
-                        onClick={handleComments}
+                        onClick={handleAddComments}
                         type="submit"
                         className="text-sm text-primary rounded-full py-1.5 px-3.5 bg-follow-btn"
                     >
