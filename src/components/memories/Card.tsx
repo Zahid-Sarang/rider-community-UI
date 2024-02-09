@@ -1,9 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Heart, HeartHandshake, MessageCircleMore, MoreHorizontal } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+    ChevronDown,
+    Heart,
+    HeartHandshake,
+    MessageCircleMore,
+    MoreHorizontal,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { addLikes } from "../../http/api";
+import { addCommentsApi, addLikes } from "../../http/api";
 import { useAuthStore } from "../../store";
+import profilePlaceHolder from "../../assets/profile.jpg";
 
 interface Memories {
     id: number;
@@ -14,6 +21,7 @@ interface Memories {
     lastName: string;
     profilePhoto?: string;
     likes: any[];
+    memoryComments: any[];
     userId: number;
 }
 
@@ -26,11 +34,13 @@ const Card = ({
     firstName,
     lastName,
     likes,
+    memoryComments,
     userId,
 }: Memories) => {
     const { user } = useAuthStore();
     const queryClient = useQueryClient();
     const [liked, setLiked] = useState(false);
+    const commentInputRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
         if (user && likes.some((like) => like.user.id === user.id)) {
@@ -48,12 +58,31 @@ const Card = ({
         },
     });
 
+    const { mutate: addComment } = useMutation({
+        mutationKey: ["likes"],
+        mutationFn: addCommentsApi,
+        onSuccess: async () => {
+            queryClient.invalidateQueries({ queryKey: ["memories"] });
+            return;
+        },
+    });
+
+    const handleComments = async () => {
+        if (commentInputRef.current?.value != null) {
+            const text = commentInputRef.current?.value;
+            await addComment({ text, userId: user!.id, memoryId: id });
+            commentInputRef.current.value = "";
+        }
+        return;
+    };
+
     const handleAddLikes = async () => {
         const userId = user!.id;
         const memoryId = id;
         await Likes({ userId, memoryId });
     };
 
+    console.log("memories comments", memoryComments);
     return (
         <>
             <div className="my-4 font-medium shadow-sm text5-sm bg-sidebar-bg rounded-xl border1">
@@ -106,20 +135,59 @@ const Card = ({
                         <span>
                             <MessageCircleMore />
                         </span>
-                        <span>260</span>
+                        <span>{memoryComments.length}</span>
                     </div>
                 </div>
+                {memoryComments && (
+                    <div className="sm:p-4 p-2.5 border-t font-normal space-y-3 relative border-slate-700/40">
+                        {memoryComments.slice(-3).map((comment, index) => (
+                            <div key={index} className="relative flex items-start gap-3">
+                                <Link to={`profile/${comment.user.id}`}>
+                                    <img
+                                        src={
+                                            comment.user.profilePhoto
+                                                ? comment.user.profilePhoto
+                                                : profilePlaceHolder
+                                        }
+                                        alt="userProfile"
+                                        className="object-cover w-6 h-6 mt-1 rounded-full"
+                                    />
+                                </Link>
+                                <div className="flex-1">
+                                    <Link
+                                        to={`profile/${comment.user.id}`}
+                                        className="inline-block text-sm font-medium text-primary"
+                                    >
+                                        {comment.user.firstName}
+                                    </Link>
+                                    <p className="mt-0.5 text-primary">{comment.text}</p>
+                                </div>
+                            </div>
+                        ))}
+                        {memoryComments.length > 3 && (
+                            <Link
+                                to={`memory/${id}`}
+                                className="flex items-center gap-1.5 text-gray-500 hover:text-blue-500 mt-2 "
+                            >
+                                <ChevronDown />
+                                More Comment
+                            </Link>
+                        )}
+                    </div>
+                )}
 
                 <div className="sm:px-4 sm:py-3 p-2.5 border-t  flex items-center gap-2 border-slate-700/40">
                     <img src={profilePhoto} alt="active-user" className="w-6 h-6 rounded-full" />
                     <div className="relative flex-1 h-10 overflow-hidden">
                         <textarea
+                            ref={commentInputRef}
                             placeholder="Add Comments..."
                             rows={1}
                             className="w-full text-primary border-none resize-none !bg-transparent px-4 py-2 focus:!border-transparent focus:!ring-transparent"
                         ></textarea>
                     </div>
                     <button
+                        onClick={handleComments}
                         type="submit"
                         className="text-sm text-primary rounded-full py-1.5 px-3.5 bg-follow-btn"
                     >

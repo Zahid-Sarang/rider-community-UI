@@ -70,3 +70,9 @@ export type follow = {
     followerId: number;
     followedId: number;
 };
+
+export type comments = {
+    text: string;
+    userId: number;
+    memoryId: number;
+};

@@ -8,17 +8,20 @@ import { useAuthStore } from "../store";
 import { useState } from "react";
 import CreateMemory from "../components/memories/CreateMemory";
 
+interface User {
+    id: number;
+    profilePhoto: string;
+    firstName: string;
+    lastName: string;
+}
+
 interface Memory {
+    comments: any[];
     id: number;
     title: string;
     description: string;
     image: string;
-    user: {
-        id: number;
-        profilePhoto: string;
-        firstName: string;
-        lastName: string;
-    };
+    user: User;
     likes: any[];
 }
 
@@ -44,6 +47,7 @@ function HomePage() {
             }
         },
     });
+    console.log(memoriesData);
     const handleMemoryDialogBox = () => {
         setIsOpen(false);
     };
@@ -87,6 +91,7 @@ function HomePage() {
                                     lastName={memory.user.lastName}
                                     likes={memory.likes}
                                     userId={memory.user.id}
+                                    memoryComments={memory.comments}
                                 />
                             </div>
                         ))}

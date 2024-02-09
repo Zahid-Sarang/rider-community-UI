@@ -1,5 +1,6 @@
 import {
     addLike,
+    comments,
     Credentials,
     follow,
     ItineraryData,
@@ -38,5 +39,6 @@ export const unFollowedUser = (userId: number) => api.get(`users/${userId}/unfol
 export const usersMemories = (userId: number) => api.get(`memory/${userId}/userCanSee`);
 export const getUserInfo = (userId: number) => api.get(`/users/${userId}`);
 export const addLikes = (data: addLike) => api.put("memory/addlikes", data);
-export const followUsers = (data: follow) => api.post("/users/follow", data);
-export const unFollowUsers = (data: follow) => api.post("/users/unfollow", data);
+export const followUsers = (followData: follow) => api.post("/users/follow", followData);
+export const unFollowUsers = (unFollowData: follow) => api.post("/users/unfollow", unFollowData);
+export const addCommentsApi = (commentData: comments) => api.put("memory/addComment", commentData);
