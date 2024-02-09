@@ -5,6 +5,8 @@ import Card from "../components/memories/Card";
 import UserSuggestion from "../components/suggestion/UserSuggestion";
 import { unFollowedUser, usersMemories } from "../http/api";
 import { useAuthStore } from "../store";
+import { useState } from "react";
+import CreateMemory from "../components/memories/CreateMemory";
 
 interface Memory {
     id: number;
@@ -22,6 +24,8 @@ interface Memory {
 
 function HomePage() {
     const { user } = useAuthStore();
+    const [isOpen, setIsOpen] = useState(false);
+
     const { data: unFollowedUsersData } = useQuery({
         queryKey: ["unFollowed"],
         queryFn: () => {
@@ -40,25 +44,32 @@ function HomePage() {
             }
         },
     });
-    console.log("Memories Data", memoriesData);
+    const handleMemoryDialogBox = () => {
+        setIsOpen(false);
+    };
     return (
         <>
             <div className="flex max-lg:flex-col xl:gap-10 md:gap-3 md:mt-10">
-                {/* memories feed */}
                 <div className="md:max-w-[510px] mx-auto flex-1 xl:space-y-6 space-y-3">
                     {/* create memories */}
                     <div className="p-4 space-y-4 text-sm font-medium shadow-sm rounded-xl border1 bg-sidebar-bg">
                         <div className="flex items-center gap-3">
                             <div className="flex-1 transition-all rounded-lg cursor-pointer hover:bg-opacity-80 bg-[#344155]">
                                 <div className="py-2.5 text-center text-white">
-                                    Share your Ride Memories!
+                                    <button onClick={() => setIsOpen(true)}>
+                                        Share your Ride Memories!
+                                    </button>
                                 </div>
                             </div>
-                            <div className="p-2 transition-all rounded-lg cursor-pointer bg-sky-100 hover:bg-opacity-80">
+                            <button
+                                onClick={() => setIsOpen(true)}
+                                className="p-2 transition-all rounded-lg cursor-pointer bg-sky-100 hover:bg-opacity-80"
+                            >
                                 <Image color="#0084C7" />
-                            </div>
+                            </button>
                         </div>
                     </div>
+
                     {/* Memories */}
                     {memoriesData &&
                         memoriesData.map((memory: Memory, index: number) => (
@@ -107,6 +118,7 @@ function HomePage() {
                     </div>
                 </div>
             </div>
+            {isOpen && <CreateMemory handleMemoryDialog={handleMemoryDialogBox} />}
         </>
     );
 }
