@@ -3,6 +3,7 @@ import { debounce } from "lodash";
 import { ArrowLeft, Image, Search, TentTree, User } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import Spinner from "../../components/loading/Spinner";
 import UserSearch from "../../components/serach/UserSearch";
 import { ITINERARIES, MEMORIES, USERS } from "../../constants/constVariable";
 import { getUsers } from "../../http/api";
@@ -16,7 +17,7 @@ const SearchPage = () => {
     const [queryParams, setQueryParams] = useState<QueryParams>({});
     const [searchTerm, setSearchTerm] = useState<string>("");
 
-    const { data: users } = useQuery({
+    const { data: users, isPending } = useQuery({
         queryKey: ["SearchUsers", queryParams],
         queryFn: async () => {
             const queryString = Object.entries(queryParams)
@@ -43,7 +44,7 @@ const SearchPage = () => {
         const searchTerm = e.target.value.trim();
         debouncedQUpdate(searchTerm);
     };
-    console.log(users);
+
     return (
         <>
             {/* Search Bar */}
@@ -106,10 +107,19 @@ const SearchPage = () => {
                 </ul>
             </div>
 
-            {searchIn === USERS && users && (
-                <div>
-                    <UserSearch usersData={users} />
-                </div>
+            {isPending ? (
+                <>
+                    <div className="flex items-center justify-center h-auto mt-20">
+                        <Spinner />
+                    </div>
+                </>
+            ) : (
+                searchIn === USERS &&
+                users && (
+                    <div>
+                        <UserSearch usersData={users} />
+                    </div>
+                )
             )}
         </>
     );

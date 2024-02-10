@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import Spinner from "../components/loading/Spinner";
 import { getSelf } from "../constants";
 import { useAuthStore } from "../store";
 
@@ -26,7 +27,11 @@ const Root = () => {
     }, [data, setUser]);
 
     if (isLoading) {
-        return <div>Loading....</div>;
+        return (
+            <div className="flex justify-center h-auto m-auto">
+                <Spinner />
+            </div>
+        );
     }
     return <Outlet />;
 };
