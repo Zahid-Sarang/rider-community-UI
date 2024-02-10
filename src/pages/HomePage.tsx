@@ -53,6 +53,7 @@ function HomePage() {
     };
     return (
         <>
+            {/* Home Feed */}
             <div className="flex max-lg:flex-col xl:gap-10 md:gap-3 md:mt-10">
                 <div className="md:max-w-[510px] mx-auto flex-1 xl:space-y-6 space-y-3">
                     {/* create memories */}

@@ -44,3 +44,4 @@ export const unFollowUsers = (unFollowData: follow) => api.post("/users/unfollow
 export const addCommentsApi = (commentData: comments) => api.put("memory/addComment", commentData);
 export const deleteCommentsApi = (commentId: number) =>
     api.delete(`memory/removeComment/${commentId}`);
+export const getUsers = (queryString: string) => api.get(`/users?${queryString}`);

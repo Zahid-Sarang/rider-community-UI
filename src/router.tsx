@@ -11,6 +11,7 @@ import UpdateProfilePage from "./pages/profile/UpdateProfile";
 import ItineraryPage from "./pages/itinerary/Itinerary";
 import ExplorePage from "./pages/explore/Explore";
 import UsersProfile from "./pages/profile/UsersProfile";
+import SearchPage from "./pages/search/SearchPage";
 
 export const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
                     {
                         path: "",
                         element: <HomePage />,
+                    },
+                    {
+                        path: "/search",
+                        element: <SearchPage />,
                     },
                     {
                         path: "/profile",

@@ -6,7 +6,7 @@ export const getSelf = async () => {
 };
 
 // Navbar Links
-import { Home, Search, RadioTower, PlusCircle, CircleUserRound, MapPinned } from "lucide-react";
+import { Home, Search, RadioTower, PlusCircle, CircleUserRound } from "lucide-react";
 
 export const NavLinks = [
     {

@@ -43,7 +43,7 @@ const ProfileSection = ({
                             />
                         </div>
                         <button className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-white shadow p-1.5 rounded-full sm:flex hidden">
-                            <span className="text-sidebar-bg">
+                            <span className="text-primary">
                                 <Camera />
                             </span>
                         </button>

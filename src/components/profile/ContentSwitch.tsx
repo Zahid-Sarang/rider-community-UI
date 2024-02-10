@@ -1,4 +1,4 @@
-import { CameraIcon, PlaneIcon } from "lucide-react";
+import { CameraIcon, TentTree } from "lucide-react";
 import { ITINERARIES, MEMORIES } from "../../constants/constVariable";
 
 interface Content {
@@ -17,7 +17,7 @@ const ContentSwitch = ({ handleContent, content }: Content) => {
                                 onClick={() => handleContent(MEMORIES)}
                                 className="flex gap-2"
                                 style={{
-                                    color: content === "memories" ? "#DB2677" : "#ffffffb2",
+                                    color: content === MEMORIES ? "#DB2677" : "#ffffffb2",
                                 }}
                             >
                                 <span>
@@ -31,11 +31,11 @@ const ContentSwitch = ({ handleContent, content }: Content) => {
                                 onClick={() => handleContent(ITINERARIES)}
                                 className="flex gap-2"
                                 style={{
-                                    color: content === "itineraries" ? "#DB2677" : "#ffffffb2",
+                                    color: content === ITINERARIES ? "#DB2677" : "#ffffffb2",
                                 }}
                             >
                                 <span>
-                                    <PlaneIcon />
+                                    <TentTree />
                                 </span>
                                 Itineraries
                             </button>
