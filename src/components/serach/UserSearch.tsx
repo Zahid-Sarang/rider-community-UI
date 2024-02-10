@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import { useAuthStore } from "../../store";
+
 interface User {
     id: number;
     firstName: string;
@@ -19,17 +22,36 @@ interface SearchUserData {
 }
 
 const UserSearch = ({ usersData }: { usersData: SearchUserData }) => {
-    // Destructure `data` from props and rename it to `users`
+    const { user } = useAuthStore();
+
     return (
         <div>
-            <p>Users Data</p>
-            {usersData.data.map((user) => (
-                <div key={user.id}>
-                    <p>
-                        {user.firstName} {user.lastName}
-                    </p>
-                    <p>Email: {user.email}</p>
-                    {/* Add more user details here */}
+            {usersData.data.map((userInfo) => (
+                <div key={userInfo.id} className="animate-fade-in">
+                    <Link
+                        replace={true}
+                        to={`/profile/${userInfo.id}`}
+                        className="relative flex items-center gap-3 p-2 mt-2 duration-200 rounded-xl hover:bg-sidebar-bg"
+                    >
+                        <img
+                            src={userInfo.profilePhoto}
+                            alt={userInfo.userName}
+                            className="object-cover w-16 h-16 transition duration-300 ease-in-out transform bg-gray-200 rounded-full hover:scale-110"
+                            style={{ objectFit: "cover", objectPosition: "center" }}
+                        />
+
+                        <div className="flex-1 min-w-0">
+                            <h4 className="text-base font-bold text-white">
+                                {userInfo.firstName} {userInfo.lastName}
+                            </h4>
+                            <div className="text-sm font-bold mt-0.5 text-follow-btn">
+                                {user &&
+                                user.following.find((item: User) => item.id === userInfo.id)
+                                    ? `Followed By you`
+                                    : `${user!.bio}`}
+                            </div>
+                        </div>
+                    </Link>
                 </div>
             ))}
         </div>
