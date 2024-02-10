@@ -1,8 +1,9 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import { ArrowLeft, Image, Search, TentTree, User } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import UserSearch from "../../components/serach/UserSearch";
 import { ITINERARIES, MEMORIES, USERS } from "../../constants/constVariable";
 import { getUsers } from "../../http/api";
 
@@ -24,8 +25,6 @@ const SearchPage = () => {
                         `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`,
                 )
                 .join("&");
-            console.log("QueryString", queryString);
-
             const res = await getUsers(queryString);
             return res.data;
         },
@@ -44,7 +43,7 @@ const SearchPage = () => {
         const searchTerm = e.target.value.trim();
         debouncedQUpdate(searchTerm);
     };
-
+    console.log(users);
     return (
         <>
             {/* Search Bar */}
@@ -107,9 +106,11 @@ const SearchPage = () => {
                 </ul>
             </div>
 
-            <div>
-                <h1 className="mt-2 text-2xl font-bold text-primary">{searchIn}</h1>
-            </div>
+            {searchIn === USERS && users && (
+                <div>
+                    <UserSearch usersData={users} />
+                </div>
+            )}
         </>
     );
 };
