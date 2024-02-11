@@ -1,12 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
 import { ArrowLeft, Image, Search, TentTree, User } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import Spinner from "../../components/loading/Spinner";
 import UserSearch from "../../components/serach/UserSearch";
 import { ITINERARIES, MEMORIES, USERS } from "../../constants/constVariable";
-import { getUsers } from "../../http/api";
 
 type QueryParams = {
     q?: string;
@@ -16,21 +13,6 @@ const SearchPage = () => {
     const [searchIn, setSearchIn] = useState<string>(USERS);
     const [queryParams, setQueryParams] = useState<QueryParams>({});
     const [searchTerm, setSearchTerm] = useState<string>("");
-
-    const { data: users, isPending } = useQuery({
-        queryKey: ["SearchUsers", queryParams],
-        queryFn: async () => {
-            const queryString = Object.entries(queryParams)
-                .map(
-                    ([key, value]) =>
-                        `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`,
-                )
-                .join("&");
-            const res = await getUsers(queryString);
-            return res.data;
-        },
-        enabled: !!searchTerm,
-    });
 
     // debounce
     const debouncedQUpdate = useMemo(() => {
@@ -107,19 +89,10 @@ const SearchPage = () => {
                 </ul>
             </div>
 
-            {isPending ? (
-                <>
-                    <div className="flex items-center justify-center h-auto mt-20">
-                        <Spinner />
-                    </div>
-                </>
-            ) : (
-                searchIn === USERS &&
-                users && (
-                    <div>
-                        <UserSearch usersData={users} />
-                    </div>
-                )
+            {searchIn === USERS && (
+                <div>
+                    <UserSearch queryParams={queryParams} searchTerm={searchTerm} />
+                </div>
             )}
         </>
     );

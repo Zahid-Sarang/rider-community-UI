@@ -1,32 +1,55 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { getUsers } from "../../http/api";
 import { useAuthStore } from "../../store";
+import Spinner from "../loading/Spinner";
 
 interface User {
     id: number;
     firstName: string;
     lastName: string;
     email: string;
-    password?: string; // Assuming password might be optional
     userName: string;
     profilePhoto: string;
     coverPhoto: string;
     bio: string;
     location: string;
     bikeDetails: string;
-    // Add other properties if needed
 }
 
-interface SearchUserData {
-    total: number;
-    data: User[];
-}
+type QueryParams = {
+    queryParams: { q?: string };
+    searchTerm: string;
+};
 
-const UserSearch = ({ usersData }: { usersData: SearchUserData }) => {
+const UserSearch = ({ queryParams, searchTerm }: QueryParams) => {
     const { user } = useAuthStore();
+    const { data: usersData, isPending } = useQuery({
+        queryKey: ["SearchUsers", queryParams],
+        queryFn: async () => {
+            const queryString = Object.entries(queryParams)
+                .map(
+                    ([key, value]) =>
+                        `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`,
+                )
+                .join("&");
+            const res = await getUsers(queryString);
+            return res.data;
+        },
+        enabled: !!searchTerm,
+    });
+
+    if (isPending) {
+        return (
+            <div className="flex items-start justify-center mt-10">
+                <Spinner />
+            </div>
+        );
+    }
 
     return (
         <div>
-            {usersData.data.map((userInfo) => (
+            {usersData.data.map((userInfo: User) => (
                 <div key={userInfo.id} className="animate-fade-in">
                     <Link
                         replace={true}
