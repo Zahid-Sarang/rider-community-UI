@@ -47,7 +47,6 @@ function HomePage() {
             }
         },
     });
-    console.log(memoriesData);
     const handleMemoryDialogBox = () => {
         setIsOpen(false);
     };

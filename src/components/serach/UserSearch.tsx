@@ -56,9 +56,9 @@ const UserSearch = ({ queryParams, searchTerm }: QueryParams) => {
                 <h2 className="text-secondary">{total} result</h2>
             </div>
             {searchedUserData ? (
-                searchedUserData.map((userInfo: User) => (
+                searchedUserData.map((userInfo: User, index: number) => (
                     <>
-                        <div key={userInfo.id} className="animate-fade-in">
+                        <div key={index} className="animate-fade-in">
                             <Link
                                 replace={true}
                                 to={`/profile/${userInfo.id}`}
