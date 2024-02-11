@@ -45,3 +45,4 @@ export const addCommentsApi = (commentData: comments) => api.put("memory/addComm
 export const deleteCommentsApi = (commentId: number) =>
     api.delete(`memory/removeComment/${commentId}`);
 export const getUsers = (queryString: string) => api.get(`/users?${queryString}`);
+export const getMemories = (queryString: string) => api.get(`/memory?${queryString}`);

@@ -2,6 +2,7 @@ import { debounce } from "lodash";
 import { ArrowLeft, Image, Search, TentTree, User } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import MemorySearch from "../../components/serach/MemorySearch";
 import UserSearch from "../../components/serach/UserSearch";
 import { ITINERARIES, MEMORIES, USERS } from "../../constants/constVariable";
 
@@ -89,10 +90,9 @@ const SearchPage = () => {
                 </ul>
             </div>
 
-            {searchIn === USERS && (
-                <div>
-                    <UserSearch queryParams={queryParams} searchTerm={searchTerm} />
-                </div>
+            {searchIn === USERS && <UserSearch queryParams={queryParams} searchTerm={searchTerm} />}
+            {searchIn === MEMORIES && (
+                <MemorySearch queryParams={queryParams} searchTerm={searchTerm} />
             )}
         </>
     );
