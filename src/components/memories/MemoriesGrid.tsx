@@ -10,7 +10,7 @@ interface Memory {
 
 interface Props {
     memories: Memory[];
-    total: number;
+    total?: number;
 }
 
 const MemoriesGrid = ({ memories, total }: Props) => {

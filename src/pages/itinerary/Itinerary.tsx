@@ -7,10 +7,12 @@ import { Link } from "react-router-dom";
 import { ItineraryData } from "../../types";
 import { toast } from "react-toastify";
 import { useAuthStore } from "../../store";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { itineraryApi } from "../../http/api";
+import Spinner from "../../components/loading/Spinner";
 
 const Itinerary = () => {
+    const queryClient = useQueryClient();
     const { user } = useAuthStore();
     const {
         control,
@@ -21,9 +23,13 @@ const Itinerary = () => {
         formState: { errors },
     } = useForm<ItineraryData>();
 
-    const { mutate, error } = useMutation({
+    const { mutate, error, isPending } = useMutation({
         mutationKey: ["itinerary"],
         mutationFn: itineraryApi,
+        onSuccess: ({ data }) => {
+            queryClient.invalidateQueries({ queryKey: ["memories"] });
+            toast.success(data.message || "Itinerary created successfully!");
+        },
     });
 
     const validateDateOrder = (startDate: number | Date, endDate: number | Date) => {
@@ -333,12 +339,16 @@ const Itinerary = () => {
                             >
                                 Cancel
                             </button>
-                            <button
-                                type="submit"
-                                className="px-4 py-2 text-sm font-semibold leading-5 rounded-md text-primary button lg:px-10 bg-secondary-btn max-md:flex-1"
-                            >
-                                Save
-                            </button>
+                            {isPending ? (
+                                <Spinner />
+                            ) : (
+                                <button
+                                    type="submit"
+                                    className="px-4 py-2 text-sm font-semibold leading-5 rounded-md text-primary button lg:px-10 bg-secondary-btn max-md:flex-1"
+                                >
+                                    Save
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>

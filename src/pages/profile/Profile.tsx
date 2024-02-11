@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ItineraryGrids from "../../components/itineraries/ItineraryGrids";
 import MemoriesGrid from "../../components/memories/MemoriesGrid";
 import ContentSwitch from "../../components/profile/ContentSwitch";
 import ProfileSection from "../../components/profile/ProfileSection";
@@ -51,7 +52,7 @@ const Profile = () => {
             )}
 
             {/* Itineraries */}
-            {content === ITINERARIES && <h1>Ititneraries</h1>}
+            {content === ITINERARIES && <ItineraryGrids itineraries={user!.itineraries} />}
         </>
     );
 };

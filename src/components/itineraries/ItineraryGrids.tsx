@@ -15,7 +15,7 @@ interface Itinerary {
 
 interface Props {
     itineraries: Itinerary[];
-    total: number;
+    total?: number;
 }
 
 const ItineraryGrids = ({ itineraries, total }: Props) => {
@@ -25,7 +25,7 @@ const ItineraryGrids = ({ itineraries, total }: Props) => {
                 <h1 className="text-xl font-bold text-primary">Itineraries</h1>
                 {total && <h2 className="text-secondary">{total} result</h2>}
             </div>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
                 {itineraries.map((itinerary: Itinerary) => (
                     <Link to={`/itinerary/${itinerary.id}`} key={itinerary.id}>
                         <motion.div
