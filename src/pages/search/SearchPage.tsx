@@ -1,5 +1,5 @@
 import { debounce } from "lodash";
-import { ArrowLeft, Image, Search, TentTree, User } from "lucide-react";
+import { ArrowLeft, Image, Search, TentTree, User, XCircle } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import ItinerarySearch from "../../components/serach/ItinerarySearch";
@@ -42,6 +42,13 @@ const SearchPage = () => {
             component = <ItinerarySearch queryParams={queryParams} searchTerm={searchTerm} />;
     }
 
+    const clearSearchBar = () => {
+        setQueryParams({ q: "" });
+        setSearchTerm("");
+        const inputElement = document.getElementById("searchInput") as HTMLInputElement;
+        inputElement.value = "";
+    };
+
     return (
         <>
             {/* Search Bar */}
@@ -58,8 +65,18 @@ const SearchPage = () => {
                 <h1 className="text-3xl font-extrabold text-primary">Search</h1>
             </div>
             <div className="relative mt-2 -mx-1">
-                <Search className="absolute w-5 h-5 translate-y-1/2 left-3 bottom-1/2 text-primary" />
+                <div
+                    className="absolute w-5 h-5 translate-y-1/2 left-3 bottom-1/2 text-primary "
+                    onClick={(e) => {
+                        e.preventDefault();
+                        clearSearchBar();
+                    }}
+                >
+                    {queryParams.q ? <XCircle size={20} /> : <Search size={20} />}
+                </div>
+
                 <input
+                    id="searchInput"
                     onChange={onFiledChange}
                     type="text"
                     placeholder="search"
