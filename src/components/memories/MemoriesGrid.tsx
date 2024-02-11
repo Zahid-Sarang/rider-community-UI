@@ -10,14 +10,16 @@ interface Memory {
 
 interface Props {
     memories: Memory[];
+    total: number;
 }
 
-const MemoriesGrid = ({ memories }: Props) => {
+const MemoriesGrid = ({ memories, total }: Props) => {
     return (
         <>
             {/* <Profile> */}
             <div className="flex items-center justify-between py-3">
                 <h1 className="text-xl font-bold text-primary">Memories</h1>
+                {total && <h2 className="text-secondary">{total} result</h2>}
             </div>
             <div className="grid grid-cols-2 gap-3 mt-6 lg:grid-cols-4 sm:grid-cols-3">
                 {memories.map((memory: Memory) => (

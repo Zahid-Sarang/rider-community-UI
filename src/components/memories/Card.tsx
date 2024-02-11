@@ -164,57 +164,67 @@ const Card = ({
                         <span>{memoryComments.length}</span>
                     </div>
                 </div>
-                {memoryComments && (
-                    <div className="sm:p-4 p-2.5 border-t font-normal space-y-3 relative border-slate-700/40">
-                        {memoryComments.slice(-3).map((comment, index) => (
-                            <div key={index} className="relative flex items-start gap-3">
-                                <Link to={`profile/${comment.user.id}`}>
-                                    <img
-                                        src={
-                                            comment.user.profilePhoto
-                                                ? comment.user.profilePhoto
-                                                : profilePlaceHolder
-                                        }
-                                        alt="userProfile"
-                                        className="object-cover w-6 h-6 mt-1 rounded-full"
-                                    />
-                                </Link>
-                                <div className="flex-1">
-                                    <Link
-                                        to={`profile/${comment.user.id}`}
-                                        className="inline-block text-xs font-bold text-primary"
-                                    >
-                                        {comment.user.firstName} {comment.user.lastName}
+                <div className="sm:p-4 p-2.5 border-t font-normal space-y-3 relative border-slate-700/40">
+                    {memoryComments.length > 0 ? (
+                        <>
+                            <h1 className="text-base font-bold text-primary">Comments</h1>
+                            {memoryComments.slice(-3).map((comment, index) => (
+                                <div key={index} className="relative flex items-start gap-3">
+                                    <Link to={`profile/${comment.user.id}`}>
+                                        <img
+                                            src={
+                                                comment.user.profilePhoto
+                                                    ? comment.user.profilePhoto
+                                                    : profilePlaceHolder
+                                            }
+                                            alt="userProfile"
+                                            className="object-cover w-6 h-6 mt-1 rounded-full"
+                                        />
                                     </Link>
-                                    <div className="flex justify-between">
-                                        <p className="mt-0.5 text-primary">{comment.text}</p>
-                                        {user &&
-                                            user.comments &&
-                                            user.comments.find(
-                                                (item) => item.id === comment.id,
-                                            ) && (
-                                                <button
-                                                    onClick={() => handleDeleteComment(comment.id)}
-                                                    className="text-sm text-secondary "
-                                                >
-                                                    <Trash2 size={16} />
-                                                </button>
-                                            )}
+                                    <div className="flex-1">
+                                        <Link
+                                            to={`profile/${comment.user.id}`}
+                                            className="inline-block text-xs font-bold text-primary"
+                                        >
+                                            {comment.user.firstName} {comment.user.lastName}
+                                        </Link>
+                                        <div className="flex justify-between">
+                                            <p className="mt-0.5 text-primary">{comment.text}</p>
+                                            {user &&
+                                                user.comments &&
+                                                user.comments.find(
+                                                    (item) => item.id === comment.id,
+                                                ) && (
+                                                    <button
+                                                        onClick={() =>
+                                                            handleDeleteComment(comment.id)
+                                                        }
+                                                        className="text-sm text-secondary "
+                                                    >
+                                                        <Trash2 size={16} />
+                                                    </button>
+                                                )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                        {memoryComments.length > 3 && (
-                            <Link
-                                to={`memory/${id}`}
-                                className="flex items-center gap-1.5 text-gray-500 hover:text-blue-500 mt-2 "
-                            >
-                                <ChevronDown />
-                                More Comment
-                            </Link>
-                        )}
-                    </div>
-                )}
+                            ))}
+                            {memoryComments.length > 3 && (
+                                <Link
+                                    to={`memory/${id}`}
+                                    className="flex items-center gap-1.5 text-gray-500 hover:text-blue-500 mt-2 "
+                                >
+                                    <ChevronDown />
+                                    More Comment
+                                </Link>
+                            )}
+                        </>
+                    ) : (
+                        <div className="flex justify-center  sm:p-4 p-2.5 flex-col  items-center">
+                            <h2 className="text-sm font-bold text-primary">No comments yet</h2>
+                            <p className="text-secondary">start the conversation.</p>
+                        </div>
+                    )}
+                </div>
 
                 <div className="sm:px-4 sm:py-3 p-2.5 border-t  flex items-center gap-2 border-slate-700/40">
                     <img

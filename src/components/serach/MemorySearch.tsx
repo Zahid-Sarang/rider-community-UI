@@ -37,7 +37,9 @@ const MemorySearch = ({ queryParams, searchTerm }: QueryParams) => {
         );
     }
 
-    const memories: Memories[] = memoriesData.data.map((memory: any) => ({
+    const { data: searchMemoriesData, total } = memoriesData;
+
+    const memories: Memories[] = searchMemoriesData.map((memory: any) => ({
         id: memory.id,
         title: memory.title,
         description: memory.description,
@@ -46,7 +48,7 @@ const MemorySearch = ({ queryParams, searchTerm }: QueryParams) => {
 
     return (
         <>
-            <div>{<MemoriesGrid memories={memories} />}</div>
+            <div>{<MemoriesGrid memories={memories} total={total} />}</div>
         </>
     );
 };
