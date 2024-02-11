@@ -2,6 +2,7 @@ import { debounce } from "lodash";
 import { ArrowLeft, Image, Search, TentTree, User } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import ItinerarySearch from "../../components/serach/ItinerarySearch";
 import MemorySearch from "../../components/serach/MemorySearch";
 import UserSearch from "../../components/serach/UserSearch";
 import { ITINERARIES, MEMORIES, USERS } from "../../constants/constVariable";
@@ -27,6 +28,19 @@ const SearchPage = () => {
         const searchTerm = e.target.value.trim();
         debouncedQUpdate(searchTerm);
     };
+
+    let component;
+
+    switch (searchIn) {
+        case USERS:
+            component = <UserSearch queryParams={queryParams} searchTerm={searchTerm} />;
+            break;
+        case MEMORIES:
+            component = <MemorySearch queryParams={queryParams} searchTerm={searchTerm} />;
+            break;
+        case ITINERARIES:
+            component = <ItinerarySearch queryParams={queryParams} searchTerm={searchTerm} />;
+    }
 
     return (
         <>
@@ -89,11 +103,7 @@ const SearchPage = () => {
                     </li>
                 </ul>
             </div>
-
-            {searchIn === USERS && <UserSearch queryParams={queryParams} searchTerm={searchTerm} />}
-            {searchIn === MEMORIES && (
-                <MemorySearch queryParams={queryParams} searchTerm={searchTerm} />
-            )}
+            {component}
         </>
     );
 };

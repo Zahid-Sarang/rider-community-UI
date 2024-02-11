@@ -53,7 +53,7 @@ const UserSearch = ({ queryParams, searchTerm }: QueryParams) => {
         <div>
             <div className="flex items-center justify-between py-3">
                 <h1 className="text-xl font-bold text-primary">Users</h1>
-                <h2 className="text-secondary">{`${total} results`}</h2>
+                <h2 className="text-secondary">{total} result</h2>
             </div>
             {searchedUserData ? (
                 searchedUserData.map((userInfo: User) => (

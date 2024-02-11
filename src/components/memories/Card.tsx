@@ -107,8 +107,6 @@ const Card = ({
         await Likes({ userId, memoryId });
     };
 
-    console.log("memories comments", memoryComments);
-    console.log(user);
     return (
         <>
             <div className="my-4 font-medium shadow-sm text5-sm bg-sidebar-bg rounded-xl border1">
