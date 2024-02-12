@@ -4,6 +4,7 @@ import { Navigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../../components/loading/Spinner";
 import MemoriesGrid from "../../components/memories/MemoriesGrid";
+import MemoryDialog from "../../components/memories/MemoryDialog";
 import ContentSwitch from "../../components/profile/ContentSwitch";
 import ProfileSection from "../../components/profile/ProfileSection";
 import { MEMORIES } from "../../constants/constVariable";
@@ -12,6 +13,8 @@ import { useAuthStore } from "../../store";
 
 const UsersProfile = () => {
     const [content, setContent] = useState<string>(MEMORIES);
+    const [memoryDialog, setMemoryDialog] = useState(false);
+    const [memoryId, setMemoryId] = useState<number>();
     const { user } = useAuthStore();
     const { id } = useParams();
 
@@ -28,7 +31,6 @@ const UsersProfile = () => {
         data: userInfo,
         isLoading,
         isError,
-        error,
     } = useQuery({
         queryKey: ["usersInfo"],
         queryFn: async () => {
@@ -49,9 +51,13 @@ const UsersProfile = () => {
         );
     }
 
-    if (!userInfo) {
-        return null; // or handle appropriately
-    }
+    const handleMemoryId = (id: number) => {
+        setMemoryId(id);
+        setMemoryDialog(true);
+    };
+    const closeMemoryDialog = () => {
+        setMemoryDialog(false);
+    };
 
     return (
         <>
@@ -72,8 +78,12 @@ const UsersProfile = () => {
 
             {/* Memories */}
             <div className="mt-8">
-                <MemoriesGrid memories={userInfo.memories} />
+                <MemoriesGrid memories={userInfo.memories} handleMemoryId={handleMemoryId} />
             </div>
+
+            {memoryDialog && memoryId && (
+                <MemoryDialog closeMemoryDialog={closeMemoryDialog} memoryId={memoryId} />
+            )}
         </>
     );
 };
