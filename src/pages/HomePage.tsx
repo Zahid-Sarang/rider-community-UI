@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { Image, RefreshCcw } from "lucide-react";
 import { UnfollowedData } from "../types";
-import Card from "../components/memories/Card";
+import MemoryCard from "../components/memories/MemoryCard";
 import UserSuggestion from "../components/suggestion/UserSuggestion";
 import { unFollowedUser, usersMemories } from "../http/api";
 import { useAuthStore } from "../store";
 import { useState } from "react";
 import CreateMemory from "../components/memories/CreateMemory";
+import Spinner from "../components/loading/Spinner";
 
 interface User {
     id: number;
@@ -39,7 +40,7 @@ function HomePage() {
     });
 
     // fetch users memories
-    const { data: memoriesData } = useQuery({
+    const { data: memoriesData, isPending } = useQuery({
         queryKey: ["memories"],
         queryFn: () => {
             if (user?.id) {
@@ -75,13 +76,16 @@ function HomePage() {
                     </div>
 
                     {/* Memories */}
-                    {memoriesData &&
+                    {isPending ? (
+                        <Spinner />
+                    ) : (
+                        memoriesData &&
                         memoriesData.map((memory: Memory, index: number) => (
                             <div
                                 key={index}
                                 className="text-sm font-medium shadow-sm bg-sidebar-bg rounded-xl border1"
                             >
-                                <Card
+                                <MemoryCard
                                     id={memory.id}
                                     title={memory.title}
                                     description={memory.description}
@@ -94,7 +98,8 @@ function HomePage() {
                                     memoryComments={memory.comments}
                                 />
                             </div>
-                        ))}
+                        ))
+                    )}
                 </div>
                 {/* right sidebar */}
                 <div className="mx-auto w-96 ">

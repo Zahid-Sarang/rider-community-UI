@@ -26,7 +26,7 @@ interface Memories {
     userId: number;
 }
 
-const Card = ({
+const MemoryCard = ({
     id,
     title,
     description,
@@ -252,4 +252,4 @@ const Card = ({
     );
 };
 
-export default Card;
+export default MemoryCard;

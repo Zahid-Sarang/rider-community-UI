@@ -1,5 +1,4 @@
 import { Heart } from "lucide-react";
-import { Link } from "react-router-dom";
 
 interface Memory {
     id: number;
@@ -11,9 +10,10 @@ interface Memory {
 interface Props {
     memories: Memory[];
     total?: number;
+    handleMemoryId: (id: number) => void;
 }
 
-const MemoriesGrid = ({ memories, total }: Props) => {
+const MemoriesGrid = ({ memories, total, handleMemoryId }: Props) => {
     return (
         <>
             {/* <Profile> */}
@@ -23,7 +23,7 @@ const MemoriesGrid = ({ memories, total }: Props) => {
             </div>
             <div className="grid grid-cols-2 gap-3 mt-6 lg:grid-cols-4 sm:grid-cols-3">
                 {memories.map((memory: Memory, index) => (
-                    <Link to={`/memories/${memory.id}`} key={index}>
+                    <button onClick={() => handleMemoryId(memory.id)} key={index}>
                         <div className="duration-500 delay-100 lg:hover:scale-105 hover:shadow-lg hover:z-10">
                             <div className="relative overflow-hidden rounded-lg uk-transition-toggle">
                                 <div className="relative w-full lg:h-60 h-full aspect-[3/3]">
@@ -52,7 +52,7 @@ const MemoriesGrid = ({ memories, total }: Props) => {
                                 </div>
                             </div>
                         </div>
-                    </Link>
+                    </button>
                 ))}
             </div>
             {/* </Profile> */}
