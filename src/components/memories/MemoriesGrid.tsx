@@ -11,16 +11,19 @@ interface Props {
     memories: Memory[];
     total?: number;
     handleMemoryId: (id: number) => void;
+    hideTitle?: boolean;
 }
 
-const MemoriesGrid = ({ memories, total, handleMemoryId }: Props) => {
+const MemoriesGrid = ({ memories, total, handleMemoryId, hideTitle }: Props) => {
     return (
         <>
             {/* <Profile> */}
-            <div className="flex items-center justify-between py-3">
-                <h1 className="text-xl font-bold text-primary">Memories</h1>
-                {total && <h2 className="text-secondary">{total} result</h2>}
-            </div>
+            {!hideTitle && (
+                <div className="flex items-center justify-between py-3">
+                    <h1 className="text-xl font-bold text-primary">Memories</h1>
+                    {total && <h2 className="text-secondary">{total} result</h2>}
+                </div>
+            )}
             <div className="grid grid-cols-2 gap-3 mt-6 lg:grid-cols-4 sm:grid-cols-3">
                 {memories.map((memory: Memory, index) => (
                     <button onClick={() => handleMemoryId(memory.id)} key={index}>

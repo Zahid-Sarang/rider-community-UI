@@ -18,7 +18,7 @@ type Memories = {
 
 const MemorySearch = ({ queryParams, searchTerm }: QueryParams) => {
     const [memoryDialog, setMemoryDialog] = useState(false);
-    const [memoryId, setMemoryId] = useState<number>();
+    const [memoryId, setMemoryId] = useState<number | null>(null);
     const { data: memoriesData, isPending } = useQuery({
         queryKey: ["SearchMemories", queryParams],
         queryFn: async () => {
