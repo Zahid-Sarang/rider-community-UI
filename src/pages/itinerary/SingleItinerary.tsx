@@ -89,13 +89,12 @@ const SingleItinerary = () => {
                         <img
                             src={destinationImage}
                             alt="Destination"
-                            className="w-full h-full rounded-lg shadow-lg"
-                            // style={{ maxWidth: "400px", maxHeight: "300px" }}
+                            className="w-full h-[600px] rounded-lg shadow-lg"
                         />
                     </div>
 
                     {/* admin */}
-                    <div className="flex">
+                    <div className="flex flex-col lg:flex-row">
                         <div className="pr-2">
                             <div className="flex items-center justify-between gap-10 pb-2 border-b border-slate-700">
                                 <div className="flex items-center mb-2 ">
@@ -171,7 +170,7 @@ const SingleItinerary = () => {
                         </div>
 
                         {/* Joined Users */}
-                        <div className="border-l lg:w-1/2 lg:pl-4 border-slate-700">
+                        <div className="pt-2 border-t lg:w-1/2 lg:pl-4 border-slate-700 lg:border-l lg:border-t-0">
                             <h2 className="mb-4 text-base font-semibold text-secondary">
                                 {`Total ${joinedUsers.length} Members`}
                             </h2>
