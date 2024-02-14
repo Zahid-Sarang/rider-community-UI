@@ -12,6 +12,7 @@ import ItineraryPage from "./pages/itinerary/Itinerary";
 import ExplorePage from "./pages/explore/Explore";
 import UsersProfile from "./pages/profile/UsersProfile";
 import SearchPage from "./pages/search/SearchPage";
+import SingleItinerary from "./pages/itinerary/SingleItinerary";
 
 export const router = createBrowserRouter([
     {
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
                     {
                         path: "/profile/:id",
                         element: <UsersProfile />,
+                    },
+                    {
+                        path: "/itinerary/:id",
+                        element: <SingleItinerary />,
                     },
                     {
                         path: "/create-itineraries",

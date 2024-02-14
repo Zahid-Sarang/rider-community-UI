@@ -76,3 +76,21 @@ export type comments = {
     userId: number;
     memoryId: number;
 };
+
+export interface User {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    userName: string;
+    profilePhoto: string;
+    coverPhoto: string;
+    bio: string;
+    location: string;
+    bikeDetails: string;
+}
+
+export interface JoinItinerary {
+    userId: number;
+    itineraryId: number;
+}

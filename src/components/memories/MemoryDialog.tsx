@@ -5,23 +5,11 @@ import Spinner from "../loading/Spinner";
 import profilePlaceHolder from "../../assets/profile.jpg";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store";
+import { User } from "../../types";
 
 interface Props {
     memoryId: number;
     closeMemoryDialog: () => void;
-}
-
-interface User {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    userName: string;
-    profilePhoto: string;
-    coverPhoto: string;
-    bio: string;
-    location: string;
-    bikeDetails: string;
 }
 
 interface Comment {

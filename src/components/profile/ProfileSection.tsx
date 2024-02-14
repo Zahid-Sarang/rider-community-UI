@@ -101,7 +101,7 @@ const ProfileSection = ({
                                         </button>
                                         <button className="text-white bg-secondary-btn rounded-md p-2 pt-2.5 pb-2.5 pl-4 pr-4 text-xs leading-5 font-semibold">
                                             Message
-                                        </button>{" "}
+                                        </button>
                                     </>
                                 ) : (
                                     <div>

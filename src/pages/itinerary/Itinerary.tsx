@@ -169,9 +169,14 @@ const Itinerary = () => {
                                     <input
                                         className="w-full border-0 rounded-md shadow-sm bg-follow-btn text-primary"
                                         type="text"
-                                        placeholder="tripDuration"
+                                        placeholder="Trip duration (e.g., 2 days, 3 hours)"
                                         {...register("tripDuration", {
                                             required: "Please Enter tripDuration",
+                                            pattern: {
+                                                value: /^\d+(\s(hours|days|weeks|months|years))?$/i,
+                                                message:
+                                                    "Please enter a valid duration (e.g., 2 days, 3 hours)",
+                                            },
                                         })}
                                     />
                                     {errors.tripDuration && (

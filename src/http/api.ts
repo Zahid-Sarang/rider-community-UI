@@ -4,6 +4,7 @@ import {
     Credentials,
     follow,
     ItineraryData,
+    JoinItinerary,
     MemoryData,
     RegisterData,
     UpdateUserData,
@@ -39,6 +40,7 @@ export const unFollowedUser = (userId: number) => api.get(`users/${userId}/unfol
 export const usersMemories = (userId: number) => api.get(`memory/${userId}/userCanSee`);
 export const getUserInfo = (userId: number) => api.get(`/users/${userId}`);
 export const getMemoryAPi = (memoryId: number) => api.get(`/memory/${memoryId}`);
+export const getItineraryAPi = (itineraryId: number) => api.get(`/itinerary/${itineraryId}`);
 export const addLikes = (data: addLike) => api.put("memory/addlikes", data);
 export const followUsers = (followData: follow) => api.post("/users/follow", followData);
 export const unFollowUsers = (unFollowData: follow) => api.post("/users/unfollow", unFollowData);
@@ -48,3 +50,4 @@ export const deleteCommentsApi = (commentId: number) =>
 export const getUsers = (queryString: string) => api.get(`/users?${queryString}`);
 export const getMemories = (queryString?: string) => api.get(`/memory?${queryString}`);
 export const getItineraries = (queryString: string) => api.get(`/itinerary?${queryString}`);
+export const joinItinerary = (data: JoinItinerary) => api.post("/itinerary/joinItinerary", data);
