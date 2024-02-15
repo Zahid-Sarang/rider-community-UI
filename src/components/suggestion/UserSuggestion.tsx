@@ -42,6 +42,7 @@ const UserSuggestion = ({ profile, userName, firstName, lastName, targetUserId }
             return followMutate({ followerId, followedId });
         } else {
             return unFollowMutate({ followerId, followedId });
+            
         }
     };
     return (

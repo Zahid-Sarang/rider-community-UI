@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Spinner from "../../components/loading/Spinner";
-import { getItineraryAPi, joinItinerary } from "../../http/api";
+import { getItineraryAPi, joinItinerary, leaveItinerary } from "../../http/api";
 import { useAuthStore } from "../../store";
 import { User } from "../../types";
 
@@ -20,9 +20,17 @@ const SingleItinerary = () => {
     });
 
     // joinItinerary Api call
-    const { mutate } = useMutation({
+    const { mutate: Join } = useMutation({
         mutationKey: ["joinItinerary"],
         mutationFn: joinItinerary,
+        onSuccess: () => {
+            return queryClient.invalidateQueries({ queryKey: ["singleItinerary"] });
+        },
+    });
+
+    const { mutate: Leave } = useMutation({
+        mutationKey: ["leaveItinerary"],
+        mutationFn: leaveItinerary,
         onSuccess: () => {
             return queryClient.invalidateQueries({ queryKey: ["singleItinerary"] });
         },
@@ -51,6 +59,8 @@ const SingleItinerary = () => {
         user: organizer,
     } = data;
 
+    console.log(joinedUsers);
+
     // formate Date and Time
     const formateDateAndTime = (dateAndTime: Date) => {
         const dateTime = new Date(dateAndTime);
@@ -75,9 +85,16 @@ const SingleItinerary = () => {
     const { date: startDate, time: startTime } = formateDateAndTime(startDateTime);
     const { date: endDate, time: endTime } = formateDateAndTime(endDateTime);
 
+    const isUserAdmin = user!.id === organizer.id;
+    console.log("isAdmin", isUserAdmin);
+
+    const isUserAlreadyJoined = joinedUsers.find((item: User) => item.id === user?.id);
+    console.log("isUserJoined", isUserAlreadyJoined);
+
     const handleJoinItinerary = async () => {
         const userId = user!.id;
-        await mutate({ userId, itineraryId });
+        const action = isUserAlreadyJoined ? Leave : Join;
+        await action({ userId, itineraryId });
     };
 
     return (
@@ -115,12 +132,16 @@ const SingleItinerary = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={handleJoinItinerary}
-                                    className="text-white bg-secondary-btn rounded-md p-2 pt-2.5 pb-2.5 pl-4 pr-4 text-sm leading-5 font-semibold"
-                                >
-                                    Join Itinerary
-                                </button>
+                                {!isUserAdmin && (
+                                    <button
+                                        onClick={handleJoinItinerary}
+                                        className="text-white bg-secondary-btn rounded-md p-2 pt-2.5 pb-2.5 pl-4 pr-4 text-sm leading-5 font-semibold"
+                                    >
+                                        {isUserAlreadyJoined
+                                            ? "Leave Itinerary"
+                                            : "Joined Itinerary"}
+                                    </button>
+                                )}
                             </div>
                             {/* Itinerary Info */}
                             <div className="mt-3 border-b border-slate-700">
