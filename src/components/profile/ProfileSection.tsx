@@ -1,8 +1,15 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { BikeIcon, Camera, MapPin, Settings } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import profilePlaceHolder from "../../assets/profile.jpg";
+import { followUsers, unFollowUsers } from "../../http/api";
+import { useAuthStore } from "../../store";
+import { User } from "../../types";
+import Spinner from "../loading/Spinner";
 
 interface ProfileInfo {
+    id: number;
     profilePhoto?: string;
     firstName: string;
     lastName: string;
@@ -28,7 +35,49 @@ const ProfileSection = ({
     FollowersCount,
     FollowingCount,
     canUpdate,
+    id,
 }: ProfileInfo) => {
+    const { user } = useAuthStore();
+    const [followState, setFollowState] = useState<string>();
+    const queryClient = useQueryClient();
+    const { mutate: followMutate, isPending: followPending } = useMutation({
+        mutationKey: ["follow"],
+        mutationFn: followUsers,
+        onSuccess: async () => {
+            setFollowState("UnFollow");
+            queryClient.invalidateQueries({ queryKey: ["usersInfo"] });
+        },
+    });
+
+    const { mutate: unFollowMutate, isPending: unFollowPending } = useMutation({
+        mutationKey: ["unFollow"],
+        mutationFn: unFollowUsers,
+        onSuccess: async () => {
+            setFollowState("Follow");
+            queryClient.invalidateQueries({ queryKey: ["usersInfo"] });
+        },
+    });
+
+    useEffect(() => {
+        const isUserFollow = user?.following.some((followedUser: User) => followedUser.id === id);
+        if (isUserFollow) {
+            setFollowState("UnFollow");
+        } else {
+            setFollowState("Follow");
+        }
+    }, [user, id]);
+
+    const handleFollowAndUnFollow = () => {
+        const followerId = user!.id;
+        const followedId = id;
+
+        if (followState === "Follow") {
+            followMutate({ followerId, followedId });
+        } else {
+            unFollowMutate({ followerId, followedId });
+        }
+    };
+
     return (
         <>
             <div className="relative py-6">
@@ -94,11 +143,22 @@ const ProfileSection = ({
                                 {!canUpdate ? (
                                     <>
                                         <button
-                                            type="submit"
-                                            className="text-secondary-btn bg-pink-100 border border-pink-200 rounded-md p-2 pt-2.5 pb-2.5 pl-4 pr-4 text-xs leading-5 font-semibold"
+                                            className={`text-secondary-btn bg-pink-100 border border-pink-200 rounded-md p-2 pt-2.5 pb-2.5 pl-4 pr-4 text-xs leading-5 font-semibold ${
+                                                followPending || unFollowPending
+                                                    ? "opacity-50 pointer-events-none"
+                                                    : ""
+                                            }`}
+                                            onClick={handleFollowAndUnFollow}
                                         >
-                                            Follow
+                                            {followPending || unFollowPending ? (
+                                                <Spinner />
+                                            ) : followState === "Follow" ? (
+                                                "Follow"
+                                            ) : (
+                                                "Unfollow"
+                                            )}
                                         </button>
+
                                         <button className="text-white bg-secondary-btn rounded-md p-2 pt-2.5 pb-2.5 pl-4 pr-4 text-xs leading-5 font-semibold">
                                             Message
                                         </button>

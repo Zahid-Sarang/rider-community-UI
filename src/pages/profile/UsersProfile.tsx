@@ -60,20 +60,23 @@ const UsersProfile = () => {
         setMemoryDialog(false);
     };
 
+    const canUpdate = user!.id === Number(id);
+
     return (
         <>
             <ProfileSection
+                id={Number(id)}
                 profilePhoto={userInfo.profilePhoto}
                 firstName={userInfo.firstName}
                 lastName={userInfo.lastName}
                 userName={userInfo.userName}
                 bio={userInfo!.bio}
-                bikeDetails={user!.bikeDetails}
+                bikeDetails={userInfo!.bikeDetails}
                 location={userInfo!.location}
-                MemoriesCount={user!.memories.length}
-                FollowersCount={user!.followers.length}
+                MemoriesCount={userInfo!.memories.length}
+                FollowersCount={userInfo!.followers.length}
                 FollowingCount={userInfo!.following.length}
-                canUpdate={false}
+                canUpdate={canUpdate}
             />
             <ContentSwitch handleContent={handleChangeContent} content={content} />
 
