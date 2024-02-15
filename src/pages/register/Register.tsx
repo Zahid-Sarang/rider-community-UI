@@ -29,7 +29,7 @@ const Register = () => {
         enabled: false,
     });
 
-    const { mutate, error } = useMutation({
+    const { mutate, isError, error } = useMutation({
         mutationKey: ["register"],
         mutationFn: registerUser,
         onSuccess: async () => {
@@ -44,8 +44,9 @@ const Register = () => {
         reset();
     };
 
-    if (error) {
-        toast.error(`API Error: ${error.message}`, {
+    if (isError) {
+        console.log(error);
+        toast.error("Failed to Register try again!", {
             toastId: "apiError1",
             position: "top-right",
             autoClose: 5000,

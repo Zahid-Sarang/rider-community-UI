@@ -36,7 +36,7 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
     devtools((set) => ({
         user: null,
-        setUser: (user) => set({ user }),
+        setUser: (user) => set({user}),
         logout: () => set({ user: null }),
     })),
 );

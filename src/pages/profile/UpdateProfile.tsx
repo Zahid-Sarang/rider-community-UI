@@ -48,9 +48,7 @@ const UpdateProfile = () => {
 
         if (data.profilePhoto && data.profilePhoto.length > 0) {
             formData.append("profilePhoto", data.profilePhoto[0]);
-        } else if (user?.profilePhoto) {
-            formData.append("profilePhoto", user?.profilePhoto);
-        }
+        } 
 
         if (data.coverPhoto && data.coverPhoto.length > 0) {
             formData.append("coverPhoto", data.coverPhoto[0]);
