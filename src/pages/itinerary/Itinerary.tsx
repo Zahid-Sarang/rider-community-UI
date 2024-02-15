@@ -113,7 +113,11 @@ const Itinerary = () => {
                 </Link>
                 <h1 className="text-3xl font-extrabold text-primary">Create Itinerary</h1>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                encType="multipart/form-data"
+                autoComplete="off"
+            >
                 {/* itinerary form */}
                 <div className="mt-6 mb-20 text-sm font-medium text-follow-btn ">
                     <div className="p-6 overflow-hidden border shadow-sm bg-sidebar-bg rounded-xl md:py-12 md:px-20 border-follow-btn ">

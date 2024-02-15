@@ -87,7 +87,7 @@ const UpdateProfile = () => {
                 </Link>
                 <h1 className="text-3xl font-extrabold text-primary">Settings</h1>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+            <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" autoComplete="off">
                 <div className="border shadow-sm bg-sidebar-bg rounded-xl border-follow-btn">
                     <div className="flex items-center gap-4 p-6 md:gap-8 md:p-10">
                         <div className="relative w-12 h-12 md:w-20 md:h-20 shrink-0">

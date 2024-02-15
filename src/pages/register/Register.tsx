@@ -67,7 +67,7 @@ const Register = () => {
                         <div className="sm:mx-auto sm:w-full sm:max-w-sm"></div>
 
                         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+                            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                                 <div>
                                     <label
                                         htmlFor="firstName"
