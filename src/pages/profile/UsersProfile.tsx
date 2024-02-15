@@ -2,12 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import ItineraryGrids from "../../components/itineraries/ItineraryGrids";
 import Spinner from "../../components/loading/Spinner";
 import MemoriesGrid from "../../components/memories/MemoriesGrid";
 import MemoryDialog from "../../components/memories/MemoryDialog";
 import ContentSwitch from "../../components/profile/ContentSwitch";
 import ProfileSection from "../../components/profile/ProfileSection";
-import { MEMORIES } from "../../constants/constVariable";
+import { ITINERARIES, MEMORIES } from "../../constants/constVariable";
 import { getUserInfo } from "../../http/api";
 import { useAuthStore } from "../../store";
 
@@ -77,13 +78,18 @@ const UsersProfile = () => {
             <ContentSwitch handleContent={handleChangeContent} content={content} />
 
             {/* Memories */}
-            <div className="mt-8">
-                <MemoriesGrid memories={userInfo.memories} handleMemoryId={handleMemoryId} />
-            </div>
+            {content === MEMORIES && (
+                <div className="mt-8">
+                    <MemoriesGrid memories={userInfo.memories} handleMemoryId={handleMemoryId} />
+                </div>
+            )}
 
             {memoryDialog && memoryId && (
                 <MemoryDialog closeMemoryDialog={closeMemoryDialog} memoryId={memoryId} />
             )}
+
+            {/* Itineraries */}
+            {content === ITINERARIES && <ItineraryGrids itineraries={userInfo!.itineraries} />}
         </>
     );
 };
