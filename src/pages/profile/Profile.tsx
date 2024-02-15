@@ -28,6 +28,7 @@ const Profile = () => {
         <>
             {/* profile info */}
             <ProfileSection
+                id={user! .id}
                 profilePhoto={user?.profilePhoto}
                 firstName={user!.firstName}
                 lastName={user!.lastName}
@@ -43,16 +44,6 @@ const Profile = () => {
             {/*  content switch */}
             <ContentSwitch handleContent={handleChangeContent} content={content} />
             {/* Bikes crousal */}
-            {/* <div className="flex flex-col py-3 mt-10">
-                {user?.coverPhoto && (
-                    <>
-                        <h1 className="text-xl font-bold text-primary">Bike's</h1>
-                        <div className="mt-5">
-                            <img src={user?.coverPhoto} alt="Bike images" className="rounded-2xl" />
-                        </div>
-                    </>
-                )}
-            </div> */}
 
             {/* Memories */}
             {content === MEMORIES && (
