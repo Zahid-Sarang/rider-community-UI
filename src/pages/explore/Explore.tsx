@@ -2,11 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Image, TentTree } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import ItineraryGrids from "../../components/itineraries/ItineraryGrids";
 import Spinner from "../../components/loading/Spinner";
 import MemoriesGrid from "../../components/memories/MemoriesGrid";
 import MemoryDialog from "../../components/memories/MemoryDialog";
 import { ITINERARIES, MEMORIES } from "../../constants/constVariable";
-import { getMemories } from "../../http/api";
+import { getItineraries, getMemories } from "../../http/api";
 const Explore = () => {
     const [current, setCurrent] = useState(MEMORIES);
     const [memoryId, setMemoryId] = useState<number | null>();
@@ -20,12 +21,22 @@ const Explore = () => {
         },
     });
 
-    if (isPending) {
+    const { data: ItineraryData, isPending: ItinerayrPending } = useQuery({
+        queryKey: ["getItineraries"],
+        queryFn: async () => {
+            const res = await getItineraries();
+            return res.data;
+        },
+    });
+
+    if (isPending || ItinerayrPending) {
         return <Spinner />;
     }
     console.log(data);
 
     const { data: memories } = data;
+
+    const { data: itinerary } = ItineraryData;
 
     const handleMemoryId = (id: number) => {
         setMemoryId(id);
@@ -92,6 +103,12 @@ const Explore = () => {
             )}
             {dialogOpen && memoryId && (
                 <MemoryDialog closeMemoryDialog={closeMemoryDialog} memoryId={memoryId} />
+            )}
+
+            {current === ITINERARIES && (
+                <>
+                    <ItineraryGrids itineraries={itinerary} />
+                </>
             )}
         </>
     );

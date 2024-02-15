@@ -49,6 +49,6 @@ export const deleteCommentsApi = (commentId: number) =>
     api.delete(`memory/removeComment/${commentId}`);
 export const getUsers = (queryString: string) => api.get(`/users?${queryString}`);
 export const getMemories = (queryString?: string) => api.get(`/memory?${queryString}`);
-export const getItineraries = (queryString: string) => api.get(`/itinerary?${queryString}`);
+export const getItineraries = (queryString?: string) => api.get(`/itinerary?${queryString}`);
 export const joinItinerary = (data: JoinItinerary) => api.post("/itinerary/joinItinerary", data);
 export const leaveItinerary = (data: JoinItinerary) => api.post("/itinerary/leaveItinerary", data);

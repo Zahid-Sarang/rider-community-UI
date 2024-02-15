@@ -111,7 +111,7 @@ const SingleItinerary = () => {
                     </div>
 
                     {/* admin */}
-                    <div className="flex flex-col lg:flex-row">
+                    <div className="flex flex-col justify-between ">
                         <div className="pr-2">
                             <div className="flex items-center justify-between gap-10 pb-2 border-b border-slate-700">
                                 <div className="flex items-center mb-2 ">
@@ -191,7 +191,7 @@ const SingleItinerary = () => {
                         </div>
 
                         {/* Joined Users */}
-                        <div className="pt-2 border-t lg:w-1/2 lg:pl-4 border-slate-700 lg:border-l lg:border-t-0">
+                        <div className="pt-2 border-t border-slate-700 ">
                             <h2 className="mb-4 text-base font-semibold text-secondary">
                                 {`Total ${joinedUsers.length} Members`}
                             </h2>
