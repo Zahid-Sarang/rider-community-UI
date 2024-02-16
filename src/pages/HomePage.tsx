@@ -71,8 +71,7 @@ function HomePage() {
                     {/* Memories */}
                     {isPending ? (
                         <Spinner />
-                    ) : (
-                        memoriesData &&
+                    ) : memoriesData ? (
                         memoriesData.map((memory: Memory, index: number) => (
                             <div
                                 key={index}
@@ -92,6 +91,8 @@ function HomePage() {
                                 />
                             </div>
                         ))
+                    ) : (
+                        <p className="text-xl text-bg-primary">there is no memories</p>
                     )}
                 </div>
                 {/* right sidebar */}

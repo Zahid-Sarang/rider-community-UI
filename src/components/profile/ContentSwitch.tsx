@@ -9,7 +9,7 @@ interface Content {
 const ContentSwitch = ({ handleContent, content }: Content) => {
     return (
         <>
-            <div className="mt-10">
+            <div className="pb-3 mt-10 border-b border-slate-700">
                 <nav className="flex text-sm font-semibold text-secondary">
                     <ul className="flex gap-10 mx-auto justify-evenly">
                         <li>

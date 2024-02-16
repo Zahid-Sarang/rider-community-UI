@@ -1,4 +1,5 @@
-import { Heart } from "lucide-react";
+import { Camera, Heart } from "lucide-react";
+import PalceHolder from "../loading/PalceHolder";
 
 interface Memory {
     id: number;
@@ -17,13 +18,18 @@ interface Props {
 const MemoriesGrid = ({ memories, total, handleMemoryId, hideTitle }: Props) => {
     return (
         <>
-            {/* <Profile> */}
-            {!hideTitle && (
-                <div className="flex items-center justify-between py-3">
-                    <h1 className="text-xl font-bold text-primary">Memories</h1>
-                    {total && <h2 className="text-secondary">{total} result</h2>}
-                </div>
+            {memories.length > 0 ? (
+                /* Profile */
+                !hideTitle && (
+                    <div className="flex items-center justify-between py-3">
+                        <h1 className="text-xl font-bold text-primary">Memories</h1>
+                        {total && <h2 className="text-secondary">{total} result</h2>}
+                    </div>
+                )
+            ) : (
+                <PalceHolder Icon={Camera} heading="Memories" infoText="memories" />
             )}
+
             <div className="grid grid-cols-2 gap-3 mt-6 lg:grid-cols-4 sm:grid-cols-3">
                 {memories.map((memory: Memory, index) => (
                     <button onClick={() => handleMemoryId(memory.id)} key={index}>
@@ -47,7 +53,7 @@ const MemoriesGrid = ({ memories, total, handleMemoryId, hideTitle }: Props) => 
                                     <div className="flex items-center justify-center w-full h-full gap-4 text-white">
                                         <div className="flex items-center gap-2">
                                             <Heart
-                                                className="invisible text-2xl md hover:visible"
+                                                className="invisible text-2xl md:hover:visible"
                                                 role="img"
                                             />
                                         </div>
@@ -58,7 +64,6 @@ const MemoriesGrid = ({ memories, total, handleMemoryId, hideTitle }: Props) => 
                     </button>
                 ))}
             </div>
-            {/* </Profile> */}
         </>
     );
 };

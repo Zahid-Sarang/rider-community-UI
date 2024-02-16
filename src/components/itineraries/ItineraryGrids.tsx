@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
+import { TentTree } from "lucide-react";
 import { Link } from "react-router-dom";
+import PalceHolder from "../loading/PalceHolder";
 
 interface Itinerary {
     id: number;
@@ -21,10 +23,16 @@ interface Props {
 const ItineraryGrids = ({ itineraries, total }: Props) => {
     return (
         <>
-            <div className="flex items-center justify-between py-3">
-                <h1 className="text-xl font-bold text-primary">Itineraries</h1>
-                {total && <h2 className="text-secondary">{total} result</h2>}
-            </div>
+            {itineraries.length > 0 ? (
+                <div className="flex items-center justify-between py-3">
+                    <div className="flex items-center justify-between py-3">
+                        <h1 className="text-xl font-bold text-primary">Itineraries</h1>
+                        {total && <h2 className="text-secondary">{total} result</h2>}
+                    </div>
+                </div>
+            ) : (
+                <PalceHolder Icon={TentTree} heading="Memories" infoText="memories" />
+            )}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
                 {itineraries.map((itinerary: Itinerary) => (
                     <Link to={`/itinerary/${itinerary.id}`} key={itinerary.id}>
