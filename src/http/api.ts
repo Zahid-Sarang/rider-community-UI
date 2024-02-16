@@ -36,7 +36,8 @@ export const memoryApi = (data: MemoryData) =>
         },
     });
 
-export const unFollowedUser = (userId: number) => api.get(`users/${userId}/unfollowedUsers`);
+export const unFollowedUser = (userId: number, queryString: string) =>
+    api.get(`users/${userId}/unfollowedUsers?${queryString}`);
 export const usersMemories = (userId: number) => api.get(`memory/${userId}/userCanSee`);
 export const getUserInfo = (userId: number) => api.get(`/users/${userId}`);
 export const getMemoryAPi = (memoryId: number) => api.get(`/memory/${memoryId}`);

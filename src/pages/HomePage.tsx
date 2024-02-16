@@ -1,14 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { Image, RefreshCcw } from "lucide-react";
-import { UnfollowedData } from "../types";
+import { Image } from "lucide-react";
 import MemoryCard from "../components/memories/MemoryCard";
-import UserSuggestion from "../components/suggestion/UserSuggestion";
-import { unFollowedUser, usersMemories } from "../http/api";
+import { usersMemories } from "../http/api";
 import { useAuthStore } from "../store";
 import { useState } from "react";
 import CreateMemory from "../components/memories/CreateMemory";
 import Spinner from "../components/loading/Spinner";
 import FriendsList from "../components/friends/FriendsList";
+import UnFollowedUsers from "../components/suggestion/UnFollowedUsers";
 
 interface User {
     id: number;
@@ -31,15 +30,6 @@ function HomePage() {
     const { user } = useAuthStore();
     const [isOpen, setIsOpen] = useState(false);
 
-    const { data: unFollowedUsersData } = useQuery({
-        queryKey: ["unFollowed"],
-        queryFn: () => {
-            if (user?.id) {
-                return unFollowedUser(user?.id).then((res) => res.data);
-            }
-        },
-    });
-
     // fetch users memories
     const { data: memoriesData, isPending } = useQuery({
         queryKey: ["memories"],
@@ -49,9 +39,11 @@ function HomePage() {
             }
         },
     });
+
     const handleMemoryDialogBox = () => {
         setIsOpen(false);
     };
+
     return (
         <>
             {/* Home Feed */}
@@ -105,27 +97,7 @@ function HomePage() {
                 {/* right sidebar */}
                 <div className="mx-auto w-96 ">
                     <div className="space-y-3 xl:space-y-6 md:pb-12">
-                        {/* user Sugesstion  */}
-
-                        <div className="p-5 px-6 shadow-sm bg-sidebar-bg rounded-xl ">
-                            <div className="flex justify-between text-primary">
-                                <h1 className="text-base font-bold">People You Might Know</h1>
-                                <button type="button">
-                                    <RefreshCcw />
-                                </button>
-                            </div>
-                            {unFollowedUsersData &&
-                                unFollowedUsersData.map((users: UnfollowedData) => (
-                                    <UserSuggestion
-                                        key={users.id}
-                                        profile={users.profilePhoto}
-                                        firstName={users.firstName}
-                                        userName={users.userName}
-                                        lastName={users.lastName}
-                                        targetUserId={users.id}
-                                    />
-                                ))}
-                        </div>
+                        <UnFollowedUsers />
                     </div>
                     <FriendsList />
                 </div>
