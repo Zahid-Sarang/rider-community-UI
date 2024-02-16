@@ -9,11 +9,13 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { getSelf } from "../../constants";
 import { toast } from "react-toastify";
 import Spinner from "../../components/loading/Spinner";
-import { rest } from "lodash";
+
+import { useState } from "react";
 
 const UpdateProfile = () => {
     const { user, setUser } = useAuthStore();
-    const { register, handleSubmit, reset } = useForm();
+    const { register, handleSubmit, reset, setValue } = useForm();
+    const [currentProfile, setCurrentProfile] = useState<string | null>(user!.profilePhoto);
 
     const { refetch } = useQuery({
         queryKey: ["self"],
@@ -35,6 +37,20 @@ const UpdateProfile = () => {
             toast.success(data.message || "Profile Updated!");
         },
     });
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setCurrentProfile(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+            const fileList = new DataTransfer();
+            fileList.items.add(file);
+            setValue("profilePhoto", fileList.files);
+        }
+    };
 
     const onSubmit: SubmitHandler<UpdateUserData> = async (data) => {
         const formData = new FormData();
@@ -93,7 +109,7 @@ const UpdateProfile = () => {
                         <div className="relative w-12 h-12 md:w-20 md:h-20 shrink-0">
                             <label className="cursor-pointer">
                                 <img
-                                    src={user?.profilePhoto || profilePlaceHolder}
+                                    src={currentProfile || profilePlaceHolder}
                                     alt="profile-Image"
                                     className="object-cover w-full h-full rounded-full"
                                 />
@@ -107,6 +123,7 @@ const UpdateProfile = () => {
                                     id="file"
                                     className="hidden"
                                     {...register("profilePhoto")}
+                                    onChange={handleImageChange}
                                 />
                             </label>
                         </div>
