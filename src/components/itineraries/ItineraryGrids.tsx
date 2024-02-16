@@ -31,7 +31,7 @@ const ItineraryGrids = ({ itineraries, total }: Props) => {
                     </div>
                 </div>
             ) : (
-                <PalceHolder Icon={TentTree} heading="Memories" infoText="memories" />
+                <PalceHolder Icon={TentTree} heading="Itineraries" infoText="itineraries" />
             )}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2">
                 {itineraries.map((itinerary: Itinerary) => (
