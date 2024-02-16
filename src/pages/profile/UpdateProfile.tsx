@@ -8,6 +8,8 @@ import { updateUserApi } from "../../http/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getSelf } from "../../constants";
 import { toast } from "react-toastify";
+import Spinner from "../../components/loading/Spinner";
+import { rest } from "lodash";
 
 const UpdateProfile = () => {
     const { user, setUser } = useAuthStore();
@@ -24,7 +26,7 @@ const UpdateProfile = () => {
         return data;
     };
 
-    const { mutate, error } = useMutation({
+    const { mutate, error, isPending } = useMutation({
         mutationKey: ["updateProfile"],
         mutationFn: updateUser,
         onSuccess: async (data) => {
@@ -35,7 +37,6 @@ const UpdateProfile = () => {
     });
 
     const onSubmit: SubmitHandler<UpdateUserData> = async (data) => {
-        console.log(data);
         const formData = new FormData();
         if (data.userName) {
             formData.append("userName", data.userName);
@@ -48,13 +49,8 @@ const UpdateProfile = () => {
 
         if (data.profilePhoto && data.profilePhoto.length > 0) {
             formData.append("profilePhoto", data.profilePhoto[0]);
-        } 
-
-        if (data.coverPhoto && data.coverPhoto.length > 0) {
-            formData.append("coverPhoto", data.coverPhoto[0]);
         }
 
-        console.log(formData);
         mutate(formData);
         reset();
     };
@@ -87,7 +83,11 @@ const UpdateProfile = () => {
                 </Link>
                 <h1 className="text-3xl font-extrabold text-primary">Settings</h1>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" autoComplete="off">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                encType="multipart/form-data"
+                autoComplete="off"
+            >
                 <div className="border shadow-sm bg-sidebar-bg rounded-xl border-follow-btn">
                     <div className="flex items-center gap-4 p-6 md:gap-8 md:p-10">
                         <div className="relative w-12 h-12 md:w-20 md:h-20 shrink-0">
@@ -180,20 +180,6 @@ const UpdateProfile = () => {
                                     />
                                 </div>
                             </div>
-                            {/* bio */}
-                            <div className="items-center gap-10 md:flex">
-                                <label className="font-medium leading-6 text-right text-secondary md:w-32">
-                                    Bio
-                                </label>
-                                <div className="flex-1 max-md:mt-4">
-                                    <textarea
-                                        className="w-full border-0 rounded-md shadow-sm bg-follow-btn text-primary"
-                                        placeholder="Enter your Bio"
-                                        rows={5}
-                                        {...register("bio")}
-                                    ></textarea>
-                                </div>
-                            </div>
                             {/* bikeDetails */}
                             <div className="items-center gap-10 md:flex">
                                 <label className="font-medium leading-6 text-right text-secondary md:w-32">
@@ -208,9 +194,23 @@ const UpdateProfile = () => {
                                     />
                                 </div>
                             </div>
+                            {/* bio */}
+                            <div className="items-center gap-10 md:flex">
+                                <label className="font-medium leading-6 text-right text-secondary md:w-32">
+                                    Bio
+                                </label>
+                                <div className="flex-1 max-md:mt-4">
+                                    <textarea
+                                        className="border-0 rounded-md shadow-sm resize-none w-[75%] bg-follow-btn text-primary"
+                                        placeholder="Enter your Bio"
+                                        rows={5}
+                                        {...register("bio")}
+                                    ></textarea>
+                                </div>
+                            </div>
 
                             {/* coverImage */}
-                            <div className="items-center gap-10 md:flex">
+                            {/* <div className="items-center gap-10 md:flex">
                                 <label className="font-medium leading-6 text-right text-secondary md:w-32">
                                     Bike Photo
                                 </label>
@@ -221,21 +221,26 @@ const UpdateProfile = () => {
                                         {...register("coverPhoto")}
                                     />
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="flex items-center justify-center gap-4 mt-16">
                             <button
+                                type="button"
                                 onClick={() => reset()}
-                                className="py-2 text-sm font-semibold leading-5 rounded-md text-primary button lg:px-6 bg-follow-btn max-md:flex-1"
+                                className="flex items-center justify-center py-2 text-sm font-semibold leading-5 rounded-md cursor-pointer text-primary button lg:px-6 bg-follow-btn max-md:flex-1"
                             >
                                 Cancle
                             </button>
-                            <button
-                                type="submit"
-                                className="px-4 py-2 text-sm font-semibold leading-5 rounded-md text-primary button lg:px-10 bg-secondary-btn max-md:flex-1"
-                            >
-                                Save
-                            </button>
+                            {isPending ? (
+                                <Spinner />
+                            ) : (
+                                <button
+                                    type="submit"
+                                    className="px-4 py-2 text-sm font-semibold leading-5 rounded-md text-primary button lg:px-10 bg-secondary-btn max-md:flex-1"
+                                >
+                                    Save
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
