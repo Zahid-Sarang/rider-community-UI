@@ -46,6 +46,7 @@ const ProfileSection = ({
         onSuccess: async () => {
             setFollowState("UnFollow");
             queryClient.invalidateQueries({ queryKey: ["usersInfo"] });
+            queryClient.invalidateQueries({ queryKey: ["self"] });
         },
     });
 
@@ -55,6 +56,7 @@ const ProfileSection = ({
         onSuccess: async () => {
             setFollowState("Follow");
             queryClient.invalidateQueries({ queryKey: ["usersInfo"] });
+            queryClient.invalidateQueries({ queryKey: ["self"] });
         },
     });
 
