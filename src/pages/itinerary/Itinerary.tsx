@@ -25,6 +25,7 @@ const Itinerary = () => {
         formState: { errors },
     } = useForm<ItineraryData>();
 
+    // create itinerary api call
     const { mutate, error, isPending } = useMutation({
         mutationKey: ["itinerary"],
         mutationFn: itineraryApi,
@@ -34,6 +35,7 @@ const Itinerary = () => {
         },
     });
 
+    // set Preview Image
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -48,6 +50,7 @@ const Itinerary = () => {
         }
     };
 
+    // validate start data and end Date
     const validateDateOrder = (startDate: number | Date, endDate: number | Date) => {
         if (!isValid(startDate) || !isValid(endDate)) {
             return "Please enter valid dates";
@@ -55,26 +58,27 @@ const Itinerary = () => {
         if (!isAfter(endDate, startDate)) {
             return "End date must be a future date of start date";
         }
+
         return true;
     };
 
     const onSubmit: SubmitHandler<ItineraryData> = async (data) => {
         try {
             // validate Dates
-            const dateValidationResult = validateDateOrder(
-                new Date(data.startDateTime),
-                new Date(data.endDateTime),
-            );
+            const startDate = new Date(data.startDateTime);
+            const endDate = new Date(data.endDateTime);
+            const dateValidationResult = validateDateOrder(startDate, endDate);
             if (dateValidationResult !== true) {
                 toast.error(dateValidationResult);
                 return;
             }
+
             const formData = new FormData();
             formData.append("tripTitle", data.tripTitle);
             formData.append("tripDescription", data.tripDescription);
             formData.append("tripDuration", data.tripDuration);
-            formData.append("startDateTime", new Date(data.startDateTime).toISOString());
-            formData.append("endDateTime", new Date(data.endDateTime).toISOString());
+            formData.append("startDateTime", startDate.toISOString());
+            formData.append("endDateTime", endDate.toISOString());
             formData.append("startPoint", data.startPoint);
             formData.append("endingPoint", data.endingPoint);
             formData.append("userId", user?.id.toString() || "");
@@ -88,7 +92,7 @@ const Itinerary = () => {
                     return;
                 }
             }
-            mutate(formData);
+            mutate(formData as unknown as ItineraryData);
 
             reset();
         } catch (error) {

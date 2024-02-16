@@ -72,7 +72,6 @@ const CreateMemory = ({ handleMemoryDialog }: CreateMemory) => {
 
     const onSubmit: SubmitHandler<MemoryData> = (data) => {
         try {
-            console.log("Image", previewImage);
             const formData = new FormData();
             formData.append("title", data.title);
             formData.append("description", data.description);
@@ -82,7 +81,7 @@ const CreateMemory = ({ handleMemoryDialog }: CreateMemory) => {
                 const file = data.image[0];
                 formData.append("image", file); // Append the image file to the form data
             }
-            mutate(formData);
+            mutate(formData as unknown as MemoryData);
         } catch (error) {
             console.log(error);
             toast.error(error);

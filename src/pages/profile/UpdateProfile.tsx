@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store";
 import profilePlaceHolder from "../../assets/profile.jpg";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { UpdateUserData } from "../../types";
+import { UpdateUserData, User } from "../../types";
 import { updateUserApi } from "../../http/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getSelf } from "../../constants";
@@ -67,7 +67,7 @@ const UpdateProfile = () => {
             formData.append("profilePhoto", data.profilePhoto[0]);
         }
 
-        mutate(formData);
+        mutate(formData as unknown as User);
         reset();
     };
 
