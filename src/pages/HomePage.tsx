@@ -8,6 +8,7 @@ import { useAuthStore } from "../store";
 import { useState } from "react";
 import CreateMemory from "../components/memories/CreateMemory";
 import Spinner from "../components/loading/Spinner";
+import FriendsList from "../components/friends/FriendsList";
 
 interface User {
     id: number;
@@ -126,6 +127,7 @@ function HomePage() {
                                 ))}
                         </div>
                     </div>
+                    <FriendsList />
                 </div>
             </div>
             {isOpen && <CreateMemory handleMemoryDialog={handleMemoryDialogBox} />}
