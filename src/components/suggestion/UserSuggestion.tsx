@@ -16,12 +16,13 @@ const UserSuggestion = ({ profile, userName, firstName, lastName, targetUserId }
     const [followState, setFollowState] = useState("Follow");
     const queryClient = useQueryClient();
     const { user } = useAuthStore();
-    const { mutate: followMutate, isPending } = useMutation({
+    const { mutate: followMutate, } = useMutation({
         mutationKey: ["follow"],
         mutationFn: followUsers,
         onSuccess: async () => {
-            setFollowState("unFollow");
+            setFollowState("UnFollow");
             queryClient.invalidateQueries({ queryKey: ["memories"] });
+            queryClient.invalidateQueries({ queryKey: ["self"] });
             return;
         },
     });
@@ -32,6 +33,7 @@ const UserSuggestion = ({ profile, userName, firstName, lastName, targetUserId }
         onSuccess: async () => {
             setFollowState("Follow");
             queryClient.invalidateQueries({ queryKey: ["memories"] });
+            queryClient.invalidateQueries({ queryKey: ["self"] });
             return;
         },
     });
@@ -42,13 +44,16 @@ const UserSuggestion = ({ profile, userName, firstName, lastName, targetUserId }
             return followMutate({ followerId, followedId });
         } else {
             return unFollowMutate({ followerId, followedId });
-            
         }
     };
     return (
         <div className="flex items-center gap-3 mt-4">
             <Link to={`/profile/${targetUserId}`}>
-                <img src={profile} alt={userName} className="w-10 h-10 bg-gray-200 rounded-full" />
+                <img
+                    src={profile}
+                    alt={userName}
+                    className="object-cover w-10 h-10 bg-gray-200 rounded-full"
+                />
             </Link>
             <div className="flex-1">
                 <Link to={`/profile/${targetUserId}`} className="text-sm font-semibold text-white">
@@ -60,7 +65,7 @@ const UserSuggestion = ({ profile, userName, firstName, lastName, targetUserId }
                 onClick={handleFollowAndUnFollow}
                 className="text-sm text-primary rounded-full py-1.5 cursor-pointer px-4 font-semibold bg-follow-btn"
             >
-                {isPending ? "Following..." : followState}
+                {followState}
             </button>
         </div>
     );

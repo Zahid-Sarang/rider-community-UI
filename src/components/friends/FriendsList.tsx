@@ -15,9 +15,6 @@ const FriendsList = () => {
         slidesToScroll: 1,
     };
 
-    // Get the first 6 following users if there are more than 6
-    // const followingUsers = user!.following.slice(0, 6);
-
     return (
         <>
             <div className="p-5 px-6 shadow-sm bg-sidebar-bg rounded-xl border1 ">
@@ -25,26 +22,22 @@ const FriendsList = () => {
                     <h3 className="text-base font-bold">Friends</h3>
                 </div>
                 <div className="mt-4">
-                    {
-                        <Slider {...settings}>
-                            {user!.following.map((following: User, index) => (
-                                <>
-                                    <div key={index}>
-                                        <Link to={`/profile/${following.id}`}>
-                                            <div className="relative w-12 h-12">
-                                                <img
-                                                    src={following.profilePhoto}
-                                                    alt={following.userName}
-                                                    className="absolute inset-0 object-cover w-full h-full rounded-full"
-                                                />
-                                                <div className="absolute bottom-0 right-0 m-0.5 bg-green-500 rounded-full w-2 h-2"></div>
-                                            </div>
-                                        </Link>
+                    <Slider {...settings}>
+                        {user!.following.map((following: User) => (
+                            <div key={following.id}>
+                                <Link to={`/profile/${following.id}`}>
+                                    <div className="relative w-12 h-12">
+                                        <img
+                                            src={following.profilePhoto}
+                                            alt={following.userName}
+                                            className="absolute inset-0 object-cover w-full h-full rounded-full"
+                                        />
+                                        <div className="absolute bottom-0 right-0 m-0.5 bg-green-500 rounded-full w-2 h-2"></div>
                                     </div>
-                                </>
-                            ))}
-                        </Slider>
-                    }
+                                </Link>
+                            </div>
+                        ))}
+                    </Slider>
                 </div>
             </div>
         </>
