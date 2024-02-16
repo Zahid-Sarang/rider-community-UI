@@ -1,4 +1,4 @@
-import { ArrowLeft, Calendar } from "lucide-react";
+import { ArrowLeft, Calendar, Image } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { isValid, isAfter } from "date-fns";
@@ -10,8 +10,10 @@ import { useAuthStore } from "../../store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { itineraryApi } from "../../http/api";
 import Spinner from "../../components/loading/Spinner";
+import { useState } from "react";
 
 const Itinerary = () => {
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
     const queryClient = useQueryClient();
     const { user } = useAuthStore();
     const {
@@ -19,7 +21,7 @@ const Itinerary = () => {
         register,
         handleSubmit,
         reset,
-        clearErrors,
+        setValue,
         formState: { errors },
     } = useForm<ItineraryData>();
 
@@ -31,6 +33,20 @@ const Itinerary = () => {
             toast.success(data.message || "Itinerary created successfully!");
         },
     });
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setPreviewImage(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+            const fileList = new DataTransfer();
+            fileList.items.add(file);
+            setValue("destinationImage", fileList.files);
+        }
+    };
 
     const validateDateOrder = (startDate: number | Date, endDate: number | Date) => {
         if (!isValid(startDate) || !isValid(endDate)) {
@@ -95,7 +111,7 @@ const Itinerary = () => {
     }
 
     const onCancelClick = () => {
-        clearErrors();
+        setPreviewImage(null);
         reset();
     };
 
@@ -322,27 +338,33 @@ const Itinerary = () => {
 
                             {/* destinationImage */}
                             <div className="items-center gap-10 md:flex">
-                                <label className="font-medium leading-6 text-right text-secondary md:w-32">
-                                    Destination Image
-                                </label>
-                                <div className="flex-1 max-md:mt-4">
+                                <label className="flex flex-col items-center justify-center w-full mt-2 border-b cursor-pointer h-96 left-1/2 bg-gradient-to-b from-gray-700/60 border-slate-600">
                                     <input
-                                        className="w-full border-0 rounded-md shadow-sm bg-follow-btn text-primary"
                                         type="file"
-                                        {...register("destinationImage", {
-                                            required: "Please upload Destination Image!",
-                                        })}
+                                        className="hidden"
+                                        {...register("destinationImage")}
+                                        onChange={handleImageChange}
                                     />
-                                    {errors.destinationImage && (
-                                        <p className="text-secondary-btn" role="alert">
-                                            {errors.destinationImage.message}
-                                        </p>
+                                    {previewImage ? (
+                                        <img
+                                            src={previewImage}
+                                            alt="Preview"
+                                            className="w-full h-full mt-2 rounded-md"
+                                        />
+                                    ) : (
+                                        <>
+                                            <Image color="#0084C7" />
+                                            <span className="mt-2 text-white">
+                                                Snapshot of Destination
+                                            </span>
+                                        </>
                                     )}
-                                </div>
+                                </label>
                             </div>
                         </div>
                         <div className="flex items-center justify-center gap-4 mt-16">
                             <button
+                                type="button"
                                 onClick={onCancelClick}
                                 className="py-2 text-sm font-semibold leading-5 rounded-md text-primary button lg:px-6 bg-follow-btn max-md:flex-1"
                             >
