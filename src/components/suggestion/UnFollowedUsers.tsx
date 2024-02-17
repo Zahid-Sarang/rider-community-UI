@@ -31,12 +31,12 @@ const UnFollowedUsers = () => {
             }
         },
     });
-    
+
     if (unFollowedPending) {
         return <Spinner />;
     }
-    
-    const { data: unFollowedUsersData } = unfollowed;
+
+    const { data: unFollowedUsersData, total } = unfollowed;
     // pagination
     const handlePagination = () => {
         setQueryParams((prev) => ({
@@ -51,9 +51,11 @@ const UnFollowedUsers = () => {
             <div className="p-5 px-6 shadow-sm bg-sidebar-bg rounded-xl ">
                 <div className="flex justify-between text-primary">
                     <h1 className="text-base font-bold">People You Might Know</h1>
-                    <button type="button" onClick={handlePagination}>
-                        <RefreshCcw />
-                    </button>
+                    {total > USER_PER_PAGE && (
+                        <button type="button" onClick={handlePagination}>
+                            <RefreshCcw />
+                        </button>
+                    )}
                 </div>
                 {unFollowedUsersData &&
                     unFollowedUsersData.map((users: User) => (
