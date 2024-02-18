@@ -1,11 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { HeartHandshake, MessageCircleMore, X } from "lucide-react";
-import { getMemoryAPi } from "../../http/api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { HeartHandshake, MessageCircleMore, Trash2, X } from "lucide-react";
+import { addCommentsApi, deleteCommentsApi, getMemoryAPi } from "../../http/api";
 import Spinner from "../loading/Spinner";
 import profilePlaceHolder from "../../assets/profile.jpg";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store";
 import { User } from "../../types";
+import { useCallback, useRef } from "react";
 
 interface Props {
     memoryId: number;
@@ -20,6 +21,8 @@ interface Comment {
 
 const MemoryDialog = ({ memoryId, closeMemoryDialog }: Props) => {
     const { user } = useAuthStore();
+    const queryClient = useQueryClient();
+    const commentInputRef = useRef<HTMLTextAreaElement>(null);
     const {
         data: memoryData,
         isLoading,
@@ -31,6 +34,25 @@ const MemoryDialog = ({ memoryId, closeMemoryDialog }: Props) => {
         },
     });
 
+    const { mutate: addComment } = useMutation({
+        mutationKey: ["addComment"],
+        mutationFn: addCommentsApi,
+        onSuccess: async () => {
+            queryClient.invalidateQueries({ queryKey: ["memoryDialog"] });
+            queryClient.invalidateQueries({ queryKey: ["self"] });
+            return;
+        },
+    });
+
+    const { mutate: deleteComment } = useMutation({
+        mutationKey: ["deleteComment"],
+        mutationFn: deleteCommentsApi,
+        onSuccess: async () => {
+            queryClient.invalidateQueries({ queryKey: ["memoryDialog"] });
+            return;
+        },
+    });
+
     if (isLoading) {
         return <Spinner />;
     }
@@ -38,11 +60,34 @@ const MemoryDialog = ({ memoryId, closeMemoryDialog }: Props) => {
     if (isError) {
         console.log("Error While Fetching");
     }
-    console.log(memoryData?.data);
+
     const memoryInfo = memoryData!.data;
 
     const onCloseClick = () => {
         closeMemoryDialog();
+    };
+
+    const handleAddComments = async () => {
+        if (commentInputRef.current?.value != null) {
+            const text = commentInputRef.current?.value;
+            await addComment({ text, userId: user!.id, memoryId: memoryInfo.id });
+            commentInputRef.current.value = "";
+        }
+        return;
+    };
+
+    const handleKeyDown = useCallback(
+        (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                handleAddComments();
+            }
+        },
+        [handleAddComments],
+    );
+
+    const handleDeleteComment = async (commentId: number) => {
+        await deleteComment(commentId);
     };
 
     return (
@@ -129,7 +174,25 @@ const MemoryDialog = ({ memoryId, closeMemoryDialog }: Props) => {
                                             >
                                                 {comment.user.firstName} {comment.user.lastName}
                                             </Link>
-                                            <p className="mt-0.5 text-secondary">{comment.text}</p>
+                                            <div className="flex justify-between">
+                                                <p className="mt-0.5 text-primary">
+                                                    {comment.text}
+                                                </p>
+                                                {user &&
+                                                    user.comments &&
+                                                    user.comments.find(
+                                                        (item) => item.id === comment.id,
+                                                    ) && (
+                                                        <button
+                                                            onClick={() =>
+                                                                handleDeleteComment(comment.id)
+                                                            }
+                                                            className="text-sm text-secondary "
+                                                        >
+                                                            <Trash2 size={16} />
+                                                        </button>
+                                                    )}
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
@@ -145,12 +208,15 @@ const MemoryDialog = ({ memoryId, closeMemoryDialog }: Props) => {
                         />
                         <div className="relative flex-1 h-10 overflow-hidden">
                             <textarea
+                                onKeyDown={handleKeyDown}
+                                ref={commentInputRef}
                                 placeholder="Add Comments..."
                                 rows={1}
                                 className="w-full text-sm text-primary border-none resize-none !bg-transparent px-4 py-2 focus:!border-transparent focus:!ring-transparent"
                             ></textarea>
                         </div>
                         <button
+                            onClick={handleAddComments}
                             type="submit"
                             className="text-sm text-primary rounded-full py-1.5 px-3.5 bg-follow-btn"
                         >

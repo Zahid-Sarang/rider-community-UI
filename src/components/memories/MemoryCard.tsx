@@ -244,7 +244,7 @@ const MemoryCard = ({
                         type="submit"
                         className="text-sm text-primary rounded-full py-1.5 px-3.5 bg-follow-btn"
                     >
-                        Replay
+                        Reply
                     </button>
                 </div>
             </div>
