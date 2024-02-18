@@ -52,6 +52,7 @@ const CreateMemory = ({ handleMemoryDialog }: CreateMemory) => {
         mutationFn: memoryApi,
         onSuccess: async ({ data }) => {
             queryClient.invalidateQueries({ queryKey: ["memories"] });
+            queryClient.invalidateQueries({ queryKey: ["self"] });
             toast.success(data.message || "Memory created successfully");
             onCancelClick();
         },

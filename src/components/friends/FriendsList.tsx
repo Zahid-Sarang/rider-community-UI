@@ -12,13 +12,13 @@ const FriendsList = () => {
         dots: false,
         infinite: false,
         speed: 500,
-        slidesToShow: 5,
+        slidesToShow: 6,
         slidesToScroll: 1,
     };
 
     return (
         <>
-            <div className="p-5 px-6 shadow-sm bg-sidebar-bg rounded-xl border1 ">
+            <div className="p-5 px-6 shadow-sm bg-sidebar-bg rounded-xl border1">
                 {user!.following.length > 0 ? (
                     <>
                         <div className="flex justify-between text-primary">

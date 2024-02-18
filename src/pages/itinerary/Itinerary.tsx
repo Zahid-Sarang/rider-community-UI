@@ -30,7 +30,8 @@ const Itinerary = () => {
         mutationKey: ["itinerary"],
         mutationFn: itineraryApi,
         onSuccess: ({ data }) => {
-            queryClient.invalidateQueries({ queryKey: ["memories"] });
+            queryClient.invalidateQueries({ queryKey: ["self"] });
+            setPreviewImage(null)
             toast.success(data.message || "Itinerary created successfully!");
         },
     });
