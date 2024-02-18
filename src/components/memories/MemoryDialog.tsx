@@ -6,7 +6,7 @@ import profilePlaceHolder from "../../assets/profile.jpg";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store";
 import { User } from "../../types";
-import { useCallback, useRef } from "react";
+import { useRef } from "react";
 
 interface Props {
     memoryId: number;
@@ -70,7 +70,11 @@ const MemoryDialog = ({ memoryId, closeMemoryDialog }: Props) => {
     }
 
     const memoryInfo = memoryData!.data;
-
+    const handleAddLikes = async () => {
+        const userId = user!.id;
+        const memoryId = memoryInfo.id;
+        await Likes({ userId, memoryId });
+    };
     const onCloseClick = () => {
         closeMemoryDialog();
     };
@@ -84,24 +88,8 @@ const MemoryDialog = ({ memoryId, closeMemoryDialog }: Props) => {
         return;
     };
 
-    const handleKeyDown = useCallback(
-        (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-            if (event.key === "Enter" && !event.shiftKey) {
-                event.preventDefault();
-                handleAddComments();
-            }
-        },
-        [handleAddComments],
-    );
-
     const handleDeleteComment = async (commentId: number) => {
         await deleteComment(commentId);
-    };
-
-    const handleAddLikes = async () => {
-        const userId = user!.id;
-        const memoryId = memoryInfo.id;
-        await Likes({ userId, memoryId });
     };
 
     return (
@@ -224,7 +212,6 @@ const MemoryDialog = ({ memoryId, closeMemoryDialog }: Props) => {
                         />
                         <div className="relative flex-1 h-10 overflow-hidden">
                             <textarea
-                                onKeyDown={handleKeyDown}
                                 ref={commentInputRef}
                                 placeholder="Add Comments..."
                                 rows={1}
