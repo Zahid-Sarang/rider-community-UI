@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { HeartHandshake, MessageCircleMore, Trash2, X } from "lucide-react";
-import { addCommentsApi, deleteCommentsApi, getMemoryAPi } from "../../http/api";
+import { addCommentsApi, addLikes, deleteCommentsApi, getMemoryAPi } from "../../http/api";
 import Spinner from "../loading/Spinner";
 import profilePlaceHolder from "../../assets/profile.jpg";
 import { Link } from "react-router-dom";
@@ -52,6 +52,14 @@ const MemoryDialog = ({ memoryId, closeMemoryDialog }: Props) => {
             return;
         },
     });
+    const { mutate: Likes } = useMutation({
+        mutationKey: ["likes"],
+        mutationFn: addLikes,
+        onSuccess: async () => {
+            queryClient.invalidateQueries({ queryKey: ["memoryDialog"] });
+            return;
+        },
+    });
 
     if (isLoading) {
         return <Spinner />;
@@ -88,6 +96,12 @@ const MemoryDialog = ({ memoryId, closeMemoryDialog }: Props) => {
 
     const handleDeleteComment = async (commentId: number) => {
         await deleteComment(commentId);
+    };
+
+    const handleAddLikes = async () => {
+        const userId = user!.id;
+        const memoryId = memoryInfo.id;
+        await Likes({ userId, memoryId });
     };
 
     return (
@@ -142,7 +156,9 @@ const MemoryDialog = ({ memoryId, closeMemoryDialog }: Props) => {
                                 <div className="flex items-center justify-between gap-7">
                                     {/* Likes */}
                                     <div className="flex items-center justify-center gap-2">
-                                        <HeartHandshake color="#DB2677" />
+                                        <button onClick={handleAddLikes}>
+                                            <HeartHandshake color="#DB2677" />
+                                        </button>
                                         <p className="text-primary">{memoryInfo.likes.length}</p>
                                     </div>
                                     {/* Comments */}
