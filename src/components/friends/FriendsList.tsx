@@ -19,7 +19,7 @@ const FriendsList = () => {
     return (
         <>
             <div className="p-5 px-6 shadow-sm bg-sidebar-bg rounded-xl border1">
-                {user!.following.length > 0 ? (
+                {user?.following && user!.following.length > 0 ? (
                     <>
                         <div className="flex justify-between text-primary">
                             <h3 className="text-base font-bold">Friends</h3>
