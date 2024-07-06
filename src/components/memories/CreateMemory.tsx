@@ -2,17 +2,17 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { X, Image, Plus } from "lucide-react";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
+import { toast, ToastOptions } from "react-toastify"; // Import ToastOptions
 import { memoryApi } from "../../http/api";
 import { useAuthStore } from "../../store";
 import { MemoryData } from "../../types";
 import Spinner from "../loading/Spinner";
 
-interface CreateMemory {
+interface CreateMemoryProps {
     handleMemoryDialog: () => void;
 }
 
-const CreateMemory = ({ handleMemoryDialog }: CreateMemory) => {
+const CreateMemory = ({ handleMemoryDialog }: CreateMemoryProps) => {
     const queryClient = useQueryClient();
     const { user } = useAuthStore();
     const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -50,13 +50,22 @@ const CreateMemory = ({ handleMemoryDialog }: CreateMemory) => {
     const { mutate, isPending } = useMutation({
         mutationKey: ["memory"],
         mutationFn: memoryApi,
-        onSuccess: async ({ data }) => {
+        onSuccess: async ({ data }: { data: { message?: string } }) => {
             queryClient.invalidateQueries({ queryKey: ["memories"] });
             queryClient.invalidateQueries({ queryKey: ["self"] });
-            toast.success(data.message || "Memory created successfully");
+            toast.success(data.message || "Memory created successfully", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            } as ToastOptions); // Specify ToastOptions<{}> type
             onCancelClick();
         },
-        onError: (error) => {
+        onError: (error: Error) => {
             toast.error(`API Error: ${error.message}`, {
                 toastId: "apiError1",
                 position: "top-right",
@@ -67,7 +76,7 @@ const CreateMemory = ({ handleMemoryDialog }: CreateMemory) => {
                 draggable: true,
                 progress: undefined,
                 theme: "light",
-            });
+            } as ToastOptions); // Specify ToastOptions<{}> type
         },
     });
 
@@ -78,14 +87,13 @@ const CreateMemory = ({ handleMemoryDialog }: CreateMemory) => {
             formData.append("description", data.description);
             formData.append("userId", user!.id.toString());
             if (data.image && data.image[0]) {
-                // Ensure that there is an image file before appending it to the form data
                 const file = data.image[0];
-                formData.append("image", file); // Append the image file to the form data
+                formData.append("image", file);
             }
             mutate(formData as unknown as MemoryData);
         } catch (error) {
             console.log(error);
-            toast.error(error);
+            toast.error(error as string); // Handle error case
         }
     };
 
@@ -156,7 +164,7 @@ const CreateMemory = ({ handleMemoryDialog }: CreateMemory) => {
                                                     src={previewImage}
                                                     alt="Preview"
                                                     className="w-full h-full mt-2 rounded-md"
-                                                /> // Display the preview image
+                                                />
                                             )}
                                             <Image color="#0084C7" />
                                             <span className="mt-2 text-white">
