@@ -13,7 +13,7 @@ const PalceHolder = ({ Icon, heading, infoText }: Props) => {
                 <h4 className="mt-2 text-xl font-extrabold text-primary">{heading}</h4>
             </div>
             <p className="mt-2 font-medium text-secondary">
-                When you share {infoText}, they will appear on your here.
+                When you share {infoText}, they will appear here.
             </p>
         </div>
     );

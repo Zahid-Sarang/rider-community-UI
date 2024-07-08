@@ -4,6 +4,8 @@ import { getMemories } from "../../http/api";
 import Spinner from "../loading/Spinner";
 import MemoriesGrid from "../memories/MemoriesGrid";
 import MemoryDialog from "../memories/MemoryDialog";
+import { Camera } from "lucide-react";
+import PalceHolder from "../loading/PalceHolder";
 type QueryParams = {
     queryParams: { q?: string };
     searchTerm: string;
@@ -19,7 +21,7 @@ type Memories = {
 const MemorySearch = ({ queryParams, searchTerm }: QueryParams) => {
     const [memoryDialog, setMemoryDialog] = useState(false);
     const [memoryId, setMemoryId] = useState<number | null>(null);
-    const { data: memoriesData, isPending } = useQuery({
+    const { data: memoriesData, isFetching } = useQuery({
         queryKey: ["SearchMemories", queryParams],
         queryFn: async () => {
             const queryString = Object.entries(queryParams)
@@ -33,7 +35,7 @@ const MemorySearch = ({ queryParams, searchTerm }: QueryParams) => {
         },
         enabled: !!searchTerm,
     });
-    if (isPending) {
+    if (isFetching) {
         return (
             <div className="flex items-start justify-center mt-10">
                 <Spinner />
@@ -41,9 +43,13 @@ const MemorySearch = ({ queryParams, searchTerm }: QueryParams) => {
         );
     }
 
+    if (!memoriesData) {
+        return <PalceHolder Icon={Camera} heading="Memories" infoText="memories" />;
+    }
+
     const { data: searchMemoriesData, total } = memoriesData;
 
-    const memories: Memories[] = searchMemoriesData.map((memory: any) => ({
+    const memories: Memories[] = searchMemoriesData.map((memory: Memories) => ({
         id: memory.id,
         title: memory.title,
         description: memory.description,

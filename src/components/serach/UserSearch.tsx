@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { getUsers } from "../../http/api";
 import { useAuthStore } from "../../store";
 import Spinner from "../loading/Spinner";
+import { User } from "lucide-react";
+import PalceHolder from "../loading/PalceHolder";
 
 interface User {
     id: number;
@@ -24,7 +26,7 @@ type QueryParams = {
 
 const UserSearch = ({ queryParams, searchTerm }: QueryParams) => {
     const { user } = useAuthStore();
-    const { data: usersData, isPending } = useQuery({
+    const { data: usersData, isFetching } = useQuery({
         queryKey: ["SearchUsers", queryParams],
         queryFn: async () => {
             const queryString = Object.entries(queryParams)
@@ -39,12 +41,15 @@ const UserSearch = ({ queryParams, searchTerm }: QueryParams) => {
         enabled: !!searchTerm,
     });
 
-    if (isPending) {
+    if (isFetching) {
         return (
             <div className="flex items-start justify-center mt-10">
                 <Spinner />
             </div>
         );
+    }
+    if (!usersData) {
+        return <PalceHolder Icon={User} heading="Users" infoText="users" />;
     }
 
     const { data: searchedUserData, total } = usersData;

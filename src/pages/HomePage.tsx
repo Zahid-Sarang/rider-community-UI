@@ -8,6 +8,7 @@ import CreateMemory from "../components/memories/CreateMemory";
 import Spinner from "../components/loading/Spinner";
 import FriendsList from "../components/friends/FriendsList";
 import UnFollowedUsers from "../components/suggestion/UnFollowedUsers";
+import { addLike, comments } from "../types";
 
 interface User {
     id: number;
@@ -17,13 +18,13 @@ interface User {
 }
 
 interface Memory {
-    comments: any[];
+    comments: comments[];
     id: number;
     title: string;
     description: string;
     image: string;
     user: User;
-    likes: any[];
+    likes: addLike[];
 }
 
 function HomePage() {

@@ -22,12 +22,6 @@ const UsersProfile = () => {
     const handleChangeContent = (contentData: string) => {
         setContent(contentData);
     };
-
-    if (user?.id === Number(id)) {
-        console.log(user.id === Number(id));
-        return <Navigate to="/profile" replace={true} />;
-    }
-
     const {
         data: userInfo,
         isLoading,
@@ -39,6 +33,12 @@ const UsersProfile = () => {
             return res.data;
         },
     });
+
+    if (user?.id === Number(id)) {
+        console.log(user.id === Number(id));
+        return <Navigate to="/profile" replace={true} />;
+    }
+
     if (isLoading) {
         return <Spinner />;
     }
