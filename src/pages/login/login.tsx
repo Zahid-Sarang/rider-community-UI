@@ -63,8 +63,18 @@ const LoginPage = () => {
             <div className="flex flex-col items-center justify-center min-h-screen gap-4">
                 <Logo />
                 <div className="w-full max-w-md p-8 shadow-md bg-sidebar-bg rounded-xl">
-                    <div className="sm:mx-auto sm:w-full sm:max-w-sm"></div>
-
+                    <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                        <p className="text-white">
+                            email: <span className="text-secondary-btn">demo@hotmail.com</span>
+                        </p>
+                        <p className="text-white">
+                            password: <span className="text-secondary-btn">password</span>
+                        </p>
+                        <h3 className="mt-2 text-white">
+                            <span className="text-secondary-btn">Note:</span> This Project is only
+                            for educational purpose
+                        </h3>
+                    </div>
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <div>
