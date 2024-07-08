@@ -71,8 +71,8 @@ const LoginPage = () => {
                             password: <span className="text-secondary-btn">password</span>
                         </p>
                         <h3 className="mt-2 text-white">
-                            <span className="text-secondary-btn">Note:</span> This Project is only
-                            for educational purpose
+                            <span className="text-secondary-btn">Note:</span> This project is only
+                            for educational purposes
                         </h3>
                     </div>
                     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
