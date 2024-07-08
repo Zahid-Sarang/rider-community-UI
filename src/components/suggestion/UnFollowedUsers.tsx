@@ -36,13 +36,13 @@ const UnFollowedUsers = () => {
         return <Spinner />;
     }
 
-    const { data: unFollowedUsersData, total } = unfollowed;
+    const { data: unFollowedUsersData = [], total = 0 } = unfollowed || {};
     // pagination
     const handlePagination = () => {
         setQueryParams((prev) => ({
             ...prev,
             currentPage:
-                unFollowedUsersData?.length === queryParams.perPage ? prev.currentPage + 1 : 1,
+                unFollowedUsersData.length === queryParams.perPage ? prev.currentPage + 1 : 1,
         }));
     };
     return (

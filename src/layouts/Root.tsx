@@ -28,8 +28,11 @@ const Root = () => {
 
     if (isLoading) {
         return (
-            <div className="flex justify-center h-auto m-auto">
-                <Spinner />
+            <div className="flex items-center justify-center h-auto mx-auto my-20">
+                <div className="flex items-center justify-center gap-3 text-white">
+                    <p>Server take minimum 50s to start please wait </p>
+                    <Spinner />
+                </div>
             </div>
         );
     }
